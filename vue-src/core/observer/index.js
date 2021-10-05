@@ -39,15 +39,15 @@ export class Observer {
   value: any;
   dep: Dep;
   vmCount: number; // number of vms that has this object as root $data
-
   constructor (value: any) {
     this.value = value
-    this.dep = new Dep()
+    this.dep = new Dep()  
     this.vmCount = 0
     /* 
     将Observer实例绑定到data的__ob__属性上面去，之前说过observe的时候会先检测是否已经有__ob__对象存放Observer实例了，def方法定义可以参考https://github.com/vuejs/vue/blob/dev/src/core/util/lang.js#L16 
     */
     def(value, '__ob__', this)
+    // Vue的原理是Object.defineProperty是监听对象的，所以这里分对象和数组两种情况
     if (Array.isArray(value)) {
       /*
           如果是数组，将修改后可以截获响应的数组方法替换掉该数组的原型中的原生方法，达到监听数组数据变化响应的效果。

@@ -46,10 +46,19 @@ export function initState (vm: Component) {
   vm._watchers = []
   const opts = vm.$options
   /*初始化props*/
+   // 处理 props 对象，为 props 对象的每个属性设置响应式，并将其代理到 vm 实例上
   if (opts.props) initProps(vm, opts.props)
   /*初始化方法*/
+  // 处理 methos 对象，校验每个属性的值是否为函数、和 props 属性比对进行判重处理，优先级是props>methods，第二将method[key]挂载在vue实例上面,最后得到 vm[key] = methods[key]
   if (opts.methods) initMethods(vm, opts.methods)
   /*初始化data*/
+   /**
+   * 做了三件事
+   *   1、判重处理，data 对象上的属性不能和 props、methods 对象上的属性相同
+   *   2、代理 data 对象上的属性到 vm 实例
+   *   3、为 data 对象的上数据设置响应式 
+   */
+
   if (opts.data) {
     initData(vm)
   } else {
@@ -57,8 +66,24 @@ export function initState (vm: Component) {
     observe(vm._data = {}, true /* asRootData */)
   }
   /*初始化computed*/
+    /**
+   * 三件事：
+   *   1、为 computed[key] 创建 watcher 实例，为每个computed[key]创建一个watcher实例，默认是懒执行
+   *   2、代理 computed[key] 到 vm 实例
+   *   3、判重，computed 中的 key 不能和 data、props 中的属性重复
+   *   4、缓存，通过dirty实现缓存
+   */
+
   if (opts.computed) initComputed(vm, opts.computed)
   /*初始化watchers*/
+   /**
+   * 三件事：
+   *   1、处理 watch 对象
+   *   2、为 每个 watch.key 创建 watcher 实例，key 和 watcher 实例可能是 一对多 的关系
+   *   3、如果设置了 immediate，则立即执行 回调函数
+   */
+
+
   if (opts.watch) initWatch(vm, opts.watch)
 }
 
@@ -116,7 +141,7 @@ function initProps (vm: Component, propsOptions: Object) {
     // static props are already proxied on the component's prototype
     // during Vue.extend(). We only need to proxy props defined at
     // instantiation here.
-    /*Vue.extend()期间，静态prop已经在组件原型上代理了，我们只需要在这里进行代理prop*/
+    /*代理 key 到 vm 对象上，将props[key]值代理到vue实例上面，能够通过this访问*/
     if (!(key in vm)) {
       proxy(vm, `_props`, key)
     }
@@ -261,7 +286,7 @@ function createComputedGetter (key) {
     if (watcher) {
       /*实际是脏检查，在计算属性中的依赖发生改变的时候dirty会变成true，在get的时候重新计算计算属性的输出值*/
       if (watcher.dirty) {
-        watcher.evaluate()
+        watcher.evaluate()   //计算computed的结果
       }
       /*依赖收集*/
       if (Dep.target) {

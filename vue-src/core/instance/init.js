@@ -20,34 +20,28 @@ export function initMixin (Vue: Class<Component>) {
     vm._uid = uid++
 
     let startTag, endTag
-    /* istanbul ignore if */
-    if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
-      startTag = `vue-perf-init:${vm._uid}`
-      endTag = `vue-perf-end:${vm._uid}`
-      mark(startTag)
-    }
-
-    // a flag to avoid this being observed
+ 
     /*一个防止vm实例自身被观察的标志位*/
     vm._isVue = true
     // merge options
     if (options && options._isComponent) {
-      // optimize internal component instantiation
-      // since dynamic options merging is pretty slow, and none of the
-      // internal component options needs special treatment.
+     /**
+       * 每个子组件初始化时走这里，这里只做了一些性能优化
+       * 将组件配置对象上的一些深层次属性放到 vm.$options 选项中，以提高代码的执行效率
+       */
       initInternalComponent(vm, options)
     } else {
+        /**
+       * 初始化根组件时走这里，合并 Vue 的全局配置到根组件的局部配置，比如 Vue.component 注册的全局组件会合并到 根实例的 components 选项中
+       * 至于每个子组件的选项合并则发生在两个地方：
+       *   1、Vue.component 方法注册的全局组件在注册时做了选项合并
+       *   2、{ components: { xx } } 方式注册的局部组件在执行编译器生成的 render 函数时做了选项合并，包括根组件中的 components 配置
+       */
       vm.$options = mergeOptions(
         resolveConstructorOptions(vm.constructor),
         options || {},
         vm
       )
-    }
-    /* istanbul ignore else */
-    if (process.env.NODE_ENV !== 'production') {
-      initProxy(vm)
-    } else {
-      vm._renderProxy = vm
     }
     // expose real self
     vm._self = vm
@@ -58,24 +52,30 @@ export function initMixin (Vue: Class<Component>) {
     /*初始化render*/
     initRender(vm)
     /*调用beforeCreate钩子函数并且触发beforeCreate钩子事件*/
-    callHook(vm, 'beforeCreate')
-    initInjections(vm) // resolve injections before data/props
-    /*初始化props、methods、data、computed与watch*/
+    callHook(vm, 'beforeCreate') //从源码的角度也解决了为什么在beforeCreate阶段拿不到data属性，initState在后面
+     // 初始化组件的 inject 配置项，得到 result[key] = val 形式的配置对象，然后对结果数据进行响应式处理（），并代理每个 key 到 vm 实例
+    initInjections(vm) 
+    /* 数据响应式的重点，初始化props、methods、data、computed与watch*/
     initState(vm)
-    initProvide(vm) // resolve provide after data/props
+    // 解析组件配置项上的 provide 对象，将其挂载到 vm._provided 属性上
+    initProvide(vm)
     /*调用created钩子函数并且触发created钩子事件*/
     callHook(vm, 'created')
-
-    /* istanbul ignore if */
-    if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
-      /*格式化组件名*/
-      vm._name = formatComponentName(vm, false)
-      mark(endTag)
-      measure(`${vm._name} init`, startTag, endTag)
-    }
-
+    // 如果发现配置项上有 el 选项，则自动调用 $mount 方法，也就是说有了 el 选项，就不需要再手动调用 $mount，反之，没有 el 则必须手动调用 $mount
     if (vm.$options.el) {
-      /*挂载组件*/
+      /*调用$mount方法挂载组件*/
+      // 如果是有el的话，new Vue({
+      //   el: "#app",
+      //   router,
+      //   store,
+      //   render: h => h(App)
+      // });直接代码中会调用$mount,如果没有el的话需要
+      // new Vue({
+       
+      //   router,
+      //   store,
+      //   render: h => h(App)
+      // }).$mount()
       vm.$mount(vm.$options.el)
     }
   }

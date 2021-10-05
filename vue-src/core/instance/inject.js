@@ -29,6 +29,7 @@ export function initInjections (vm: Component) {
           )
         })
       } else {
+        // 做响应式处理，代理到vue实例上（defineReactive的是vue里面实现响应式的重点方法）
         defineReactive(vm, key, result[key])
       }
     })
@@ -51,6 +52,7 @@ export function resolveInject (inject: any, vm: Component): ?Object {
       const key = keys[i]
       const provideKey = isArray ? key : inject[key]
       let source = vm
+       // 遍历所有的祖代组件，直到 根组件，找到 provide 中对应 key 的值，最后得到 result[key] = provide[provideKey]
       while (source) {
         if (source._provided && provideKey in source._provided) {
           result[key] = source._provided[provideKey]
@@ -58,6 +60,7 @@ export function resolveInject (inject: any, vm: Component): ?Object {
         }
         source = source.$parent
       }
+     
     }
     return result
   }

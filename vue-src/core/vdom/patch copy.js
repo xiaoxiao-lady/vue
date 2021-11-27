@@ -450,7 +450,12 @@ export function createPatchFunction(backend) {
     let newStartVnode = newCh[0];
     let newEndVnode = newCh[newEndIdx];
     let oldKeyToIdx, idxInOld, elmToMove, refElm;
+
+    // removeOnly is a special flag used only by <transition-group>
+    // to ensure removed elements stay in correct relative positions
+    // during leaving transitions
     const canMove = !removeOnly;
+
     while (oldStartIdx <= oldEndIdx && newStartIdx <= newEndIdx) {
       if (isUndef(oldStartVnode)) {
         oldStartVnode = oldCh[++oldStartIdx]; // Vnode has been moved left
@@ -458,7 +463,7 @@ export function createPatchFunction(backend) {
         oldEndVnode = oldCh[--oldEndIdx];
       } else if (sameVnode(oldStartVnode, newStartVnode)) {
         /*前四种情况其实是指定key的时候，判定为同一个VNode，则直接patchVnode即可，分别比较oldCh以及newCh的两头节点2*2=4种情况*/
-        patchVnode(oldStartVnode, newStartVnode, insertedVnodeQueue); //经过浅层判断之后深度遍历
+        patchVnode(oldStartVnode, newStartVnode, insertedVnodeQueue);
         oldStartVnode = oldCh[++oldStartIdx];
         newStartVnode = newCh[++newStartIdx];
       } else if (sameVnode(oldEndVnode, newEndVnode)) {
@@ -467,7 +472,7 @@ export function createPatchFunction(backend) {
         newEndVnode = newCh[--newEndIdx];
       } else if (sameVnode(oldStartVnode, newEndVnode)) {
         // Vnode moved right
-        patchVnode(oldStartVnode, newEndVnode, insertedVnodeQueue); //深度遍历
+        patchVnode(oldStartVnode, newEndVnode, insertedVnodeQueue);
         canMove &&
           nodeOps.insertBefore(
             parentElm,
@@ -477,6 +482,7 @@ export function createPatchFunction(backend) {
         oldStartVnode = oldCh[++oldStartIdx];
         newEndVnode = newCh[--newEndIdx];
       } else if (sameVnode(oldEndVnode, newStartVnode)) {
+        // Vnode moved left
         patchVnode(oldEndVnode, newStartVnode, insertedVnodeQueue);
         canMove &&
           nodeOps.insertBefore(parentElm, oldEndVnode.elm, oldStartVnode.elm);
@@ -565,6 +571,10 @@ export function createPatchFunction(backend) {
     if (oldVnode === vnode) {
       return;
     }
+    // reuse element for static trees.
+    // note we only do this if the vnode is cloned -
+    // if the new node is not cloned it means the render functions have been
+    // reset by the hot-reload-api and we need to do a proper re-render.
     /*
       如果新旧VNode都是静态的，同时它们的key相同（代表同一节点），
       并且新的VNode是clone或者是标记了once（标记v-once属性，只渲染一次），
@@ -761,15 +771,14 @@ export function createPatchFunction(backend) {
       const isRealElement = isDef(oldVnode.nodeType);
       if (!isRealElement && sameVnode(oldVnode, vnode)) {
         // patch existing root node
-        /*是同一个类型节点的时候进行深层次对比修改*/
+        /*是同一个节点的时候直接修改现有的节点*/
         patchVnode(oldVnode, vnode, insertedVnodeQueue, removeOnly);
       } else {
-        /*不是一个类型节点，直接整个节点替换成新虚拟节点*/
         if (isRealElement) {
           if (oldVnode.nodeType === 1 && oldVnode.hasAttribute(SSR_ATTR)) {
             /*当旧的VNode是服务端渲染的元素，hydrating记为true*/
             oldVnode.removeAttribute(SSR_ATTR);
-            hydrating = true; //标记是否是服务端渲染的
+            hydrating = true;
           }
           if (isTrue(hydrating)) {
             /*需要合并到真实Dom上*/
@@ -792,6 +801,8 @@ export function createPatchFunction(backend) {
           /*如果不是服务端渲染或者合并到真实Dom失败，则创建一个空的VNode节点替换它*/
           oldVnode = emptyNodeAt(oldVnode);
         }
+        // replacing existing element
+        /*取代现有元素*/
         const oldElm = oldVnode.elm;
         const parentElm = nodeOps.parentNode(oldElm);
         createElm(

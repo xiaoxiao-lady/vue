@@ -17,6 +17,7 @@ type VNodeQueue = VNode[];
 const emptyNode = vnode("", {}, [], undefined, undefined);
 
 function sameVnode(vnode1: VNode, vnode2: VNode): boolean {
+  // key值和tag值相等看做是同级节点，属性值相等不作为同级节点，直接替换的
   const isSameKey = vnode1.key === vnode2.key;
   const isSameIs = vnode1.data?.is === vnode2.data?.is;
   const isSameSel = vnode1.sel === vnode2.sel;
@@ -61,8 +62,6 @@ const hooks: Array<keyof Module> = [
 ];
 
 export function init(modules: Array<Partial<Module>>, domApi?: DOMAPI) {
-  let i: number;
-  let j: number;
   const cbs: ModuleHooks = {
     create: [],
     update: [],
@@ -74,19 +73,19 @@ export function init(modules: Array<Partial<Module>>, domApi?: DOMAPI) {
 
   const api: DOMAPI = domApi !== undefined ? domApi : htmlDomApi;
 
-  for (i = 0; i < hooks.length; ++i) {
-    cbs[hooks[i]] = [];
-    for (j = 0; j < modules.length; ++j) {
-      const hook = modules[j][hooks[i]];
-      if (hook !== undefined) {
-        (cbs[hooks[i]] as any[]).push(hook);
+  for (const hook of hooks) {
+    for (const module of modules) {
+      const currentHook = module[hook];
+      if (currentHook !== undefined) {
+        (cbs[hook] as any[]).push(currentHook);
       }
     }
   }
 
   function emptyNodeAt(elm: Element) {
     const id = elm.id ? "#" + elm.id : "";
-    const c = elm.className ? "." + elm.className.split(" ").join(".") : "";
+    const classes = elm.getAttribute("class");
+    const c = classes ? "." + classes.split(" ").join(".") : "";
     return vnode(
       api.tagName(elm).toLowerCase() + id + c,
       {},
@@ -104,42 +103,21 @@ export function init(modules: Array<Partial<Module>>, domApi?: DOMAPI) {
       }
     };
   }
-
+  // 作用在于创建真实的dom
   function createElm(vnode: VNode, insertedVnodeQueue: VNodeQueue): Node {
     let i: any;
-    let data = vnode.data;
-    if (data !== undefined) {
-      const init = data.hook?.init;
-      if (isDef(init)) {
-        init(vnode);
-        data = vnode.data;
-      }
-    }
     const children = vnode.children;
     const sel = vnode.sel;
+    // 创建注释节点
     if (sel === "!") {
       if (isUndef(vnode.text)) {
         vnode.text = "";
       }
       vnode.elm = api.createComment(vnode.text!);
     } else if (sel !== undefined) {
-      // Parse selector
-      const hashIdx = sel.indexOf("#");
-      const dotIdx = sel.indexOf(".", hashIdx);
-      const hash = hashIdx > 0 ? hashIdx : sel.length;
-      const dot = dotIdx > 0 ? dotIdx : sel.length;
-      const tag =
-        hashIdx !== -1 || dotIdx !== -1
-          ? sel.slice(0, Math.min(hash, dot))
-          : sel;
-      const elm = (vnode.elm =
-        isDef(data) && isDef((i = data.ns))
-          ? api.createElementNS(i, tag, data)
-          : api.createElement(tag, data));
-      if (hash < dot) elm.setAttribute("id", sel.slice(hash + 1, dot));
-      if (dotIdx > 0)
-        elm.setAttribute("class", sel.slice(dot + 1).replace(/\./g, " "));
-      for (i = 0; i < cbs.create.length; ++i) cbs.create[i](emptyNode, vnode);
+      // 创建元素节点，并逐级递归创建子节点，或创建文本节点。
+      // 这里还有一些特殊的处理，div#container.two.classes，暂时不考虑代码已经删除简化
+      const elm = (vnode.elm = api.createElement(sel));
       if (is.array(children)) {
         for (i = 0; i < children.length; ++i) {
           const ch = children[i];
@@ -147,17 +125,9 @@ export function init(modules: Array<Partial<Module>>, domApi?: DOMAPI) {
             api.appendChild(elm, createElm(ch as VNode, insertedVnodeQueue));
           }
         }
-      } else if (is.primitive(vnode.text)) {
-        api.appendChild(elm, api.createTextNode(vnode.text));
-      }
-      const hook = vnode.data!.hook;
-      if (isDef(hook)) {
-        hook.create?.(emptyNode, vnode);
-        if (hook.insert) {
-          insertedVnodeQueue.push(vnode);
-        }
       }
     } else {
+      // 等于undefined，创建文本节点
       vnode.elm = api.createTextNode(vnode.text!);
     }
     return vnode.elm;
@@ -363,29 +333,24 @@ export function init(modules: Array<Partial<Module>>, domApi?: DOMAPI) {
     let i: number, elm: Node, parent: Node;
     const insertedVnodeQueue: VNodeQueue = [];
     for (i = 0; i < cbs.pre.length; ++i) cbs.pre[i]();
-
+    //  首次创建的时候，oldVnode不是Vnode类型的，包装成虚拟节点
     if (!isVnode(oldVnode)) {
       oldVnode = emptyNodeAt(oldVnode);
     }
-
+    //是否为同级节点（key相等，tagName相等）
     if (sameVnode(oldVnode, vnode)) {
+      console.log("是同一个节点，需要精细化比较");
       patchVnode(oldVnode, vnode, insertedVnodeQueue);
     } else {
+      console.log("不是同一个节点，暴力插入新节点，删除旧节点");
       elm = oldVnode.elm!;
       parent = api.parentNode(elm) as Node;
-
       createElm(vnode, insertedVnodeQueue);
-
       if (parent !== null) {
         api.insertBefore(parent, vnode.elm!, api.nextSibling(elm));
         removeVnodes(parent, [oldVnode], 0, 0);
       }
     }
-
-    for (i = 0; i < insertedVnodeQueue.length; ++i) {
-      insertedVnodeQueue[i].data!.hook!.insert!(insertedVnodeQueue[i]);
-    }
-    for (i = 0; i < cbs.post.length; ++i) cbs.post[i]();
     return vnode;
   };
 }

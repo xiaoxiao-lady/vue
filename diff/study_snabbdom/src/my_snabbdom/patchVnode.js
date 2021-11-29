@@ -1,10 +1,10 @@
-import createElement from "./createElement";
+import createElement from "./createElm";
 import updateChildren from "./updateChildren";
 /**
  * 精细化比较两个节点 并用newVnode替换oldVnode
- * @param {*} oldVnode 
- * @param {*} newVnode 
- * @returns 
+ * @param {*} oldVnode
+ * @param {*} newVnode
+ * @returns
  */
 export default function patchVnode(oldVnode, newVnode) {
   // 1. 判断新旧 vnode 是否是同一个对象

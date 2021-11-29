@@ -1,8 +1,6 @@
 import h from "./my_snabbdom/h";
 
 const myVnode1 = h("div", {}, [
-  h("p", {}, "嘻嘻"),
-  h("p", {}, "哈哈"),
-  h("p", {}, h('span', {}, '呵呵')),
+  h("ul", {}, [h("li", {}, "11"), h("li", {}, "22")]),
 ]);
 console.log(myVnode1);

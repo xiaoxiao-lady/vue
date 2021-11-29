@@ -2,7 +2,14 @@ import { vnode, VNode, VNodeData } from "./vnode";
 import * as is from "./is";
 
 export type VNodes = VNode[];
-export type VNodeChildElement = VNode | string | number | undefined | null;
+export type VNodeChildElement =
+  | VNode
+  | string
+  | number
+  | String
+  | Number
+  | undefined
+  | null;
 export type ArrayOrElement<T> = T | T[];
 export type VNodeChildren = ArrayOrElement<VNodeChildElement>;
 
@@ -42,7 +49,7 @@ export function h(sel: any, b?: any, c?: any): VNode {
     if (is.array(c)) {
       children = c;
     } else if (is.primitive(c)) {
-      text = c;
+      text = c.toString();
     } else if (c && c.sel) {
       children = [c];
     }
@@ -50,7 +57,7 @@ export function h(sel: any, b?: any, c?: any): VNode {
     if (is.array(b)) {
       children = b;
     } else if (is.primitive(b)) {
-      text = b;
+      text = b.toString();
     } else if (b && b.sel) {
       children = [b];
     } else {

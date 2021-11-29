@@ -1,10 +1,10 @@
 import vnode from "./vnode";
-import createElement from "./createElement";
+import createElement from "./createElm";
 import patchVnode from "./patchVnode";
 /**
- * 
- * @param {object} oldVnode 
- * @param {object} newVnode 
+ *
+ * @param {object} oldVnode
+ * @param {object} newVnode
  */
 export default function patch(oldVnode, newVnode) {
   // 判断传入的第一个参数是 DOM节点 还是 虚拟节点

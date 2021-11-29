@@ -1,29 +1,39 @@
-import h from "./my_snabbdom/h";
-import patch from "./my_snabbdom/patch";
+import {
+  init,
+  classModule,
+  propsModule,
+  styleModule,
+  eventListenersModule,
+  h,
+} from "snabbdom";
 
+// 创建patch函数
+const patch = init([
+  classModule,
+  propsModule,
+  styleModule,
+  eventListenersModule,
+]);
+const myVnode11 = h("div", {}, [
+  h("ul", {}, ["哈哈", h("li", {}, "11"), h("li", {}, "22")]),
+]);
+console.log(myVnode11);
+// 创建虚拟节点
+const myVnode1 = h(
+  "a",
+  { props: { href: "https://www.baidu.com", target: "_blank" } },
+  "YK菌"
+);
+
+const myVnode2 = h("div", "我是一个盒子");
+
+const myVnode3 = h("ul", [
+  h("li", "苹果"),
+  h("li", [h("div", [h("p", "香蕉"), h("p", "草莓")])]),
+  h("li", h("span", "西瓜")),
+  h("li", "番茄"),
+]);
+console.log(myVnode3);
+// 让虚拟节点上树
 let container = document.getElementById("container");
-let btn = document.getElementById("btn");
-
-const myVnode1 = h("ul", {}, [
-  h("li", { key: "D" }, "D"),
-  h("li", { key: "C" }, "C"),
-  h("li", { key: "B" }, "B"),
-  h("li", { key: "A" }, "A"),
-]);
-
-// 上树
-patch(container, myVnode1);
-
-const myVnode2 = h("ul", {}, [
-  h("li", { key: "C" }, "C"),
-  h("li", { key: "B" }, "B"),
-  h("li", { key: "E" }, "E"),
-  h("li", { key: "M" }, "M"),
-  h("li", { key: "E" }, "E"),
-  h("li", { key: "D" }, "D"),
-  h("li", { key: "M" }, "M"),
-]);
-
-btn.onclick = function () {
-  patch(myVnode1, myVnode2);
-};
+patch(container, myVnode3);

@@ -1,7 +1,7 @@
-import createElement from "./createElement";
+import createElement from "./createElm";
 import patchVnode from "./patchVnode";
 /**
- * 
+ *
  * @param {object} parentElm Dom节点
  * @param {Array} oldCh oldVnode的子节点数组
  * @param {Array} newCh newVnode的子节点数组

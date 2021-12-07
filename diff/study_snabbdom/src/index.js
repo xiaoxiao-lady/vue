@@ -15,8 +15,10 @@ const patch = init([
   eventListenersModule,
 ]);
 const myVnode11 = h("div", {}, [
-  h("ul", {}, ["哈哈", h("li", {}, "11"), h("li", {}, "22")]),
+  "哈哈",
+  h("ul", {}, [h("li", {}, "11"), h("li", {}, "22")]),
 ]);
+console.log("HAA");
 console.log(myVnode11);
 // 创建虚拟节点
 const myVnode1 = h(
@@ -33,7 +35,6 @@ const myVnode3 = h("ul", [
   h("li", h("span", "西瓜")),
   h("li", "番茄"),
 ]);
-console.log(myVnode3);
 // 让虚拟节点上树
 let container = document.getElementById("container");
 patch(container, myVnode3);

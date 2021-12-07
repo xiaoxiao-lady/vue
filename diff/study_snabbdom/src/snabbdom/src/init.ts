@@ -298,8 +298,8 @@ export function init(modules: Array<Partial<Module>>, domApi?: DOMAPI) {
     vnode: VNode,
     insertedVnodeQueue: VNodeQueue
   ) {
-    const hook = vnode.data?.hook;
-    hook?.prepatch?.(oldVnode, vnode);
+    // const hook = vnode.data?.hook;
+    // hook?.prepatch?.(oldVnode, vnode);
     const elm = (vnode.elm = oldVnode.elm)!;
     const oldCh = oldVnode.children as VNode[];
     const ch = vnode.children as VNode[];
@@ -326,7 +326,7 @@ export function init(modules: Array<Partial<Module>>, domApi?: DOMAPI) {
       }
       api.setTextContent(elm, vnode.text!);
     }
-    hook?.postpatch?.(oldVnode, vnode);
+    // hook?.postpatch?.(oldVnode, vnode);
   }
 
   return function patch(oldVnode: VNode | Element, vnode: VNode): VNode {

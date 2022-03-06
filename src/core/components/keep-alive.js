@@ -70,7 +70,6 @@ export default {
       pruneCacheEntry(this.cache, key, this.keys)
     }
   },
-
   watch: {
     include (val: string | RegExp | Array<string>) {
       pruneCache(this, name => matches(val, name))
@@ -92,24 +91,24 @@ export default {
       )) {
         return vnode
       }
-
-      const { cache, keys } = this
+      const { cache, keys } = this//keys的设计就是LRU(最近最少使用原则)算法思想，缓存数量超出限制之后删除利用keys找到最少很久没有使用的
       const key: ?string = vnode.key == null
         // same constructor may get registered as different local components
         // so cid alone is not enough (#3269)
         ? componentOptions.Ctor.cid + (componentOptions.tag ? `::${componentOptions.tag}` : '')
         : vnode.key
+        // 分为首次渲染和缓存渲染
       if (cache[key]) {
+        // 缓存渲染
         vnode.componentInstance = cache[key].componentInstance
-        // make current key freshest
         remove(keys, key)
         keys.push(key)
       } else {
-        cache[key] = vnode
+        // 首次渲染
+        cache[key] = vnode     //缓存数组中存放vnode
         keys.push(key)
-        // prune oldest entry
         if (this.max && keys.length > parseInt(this.max)) {
-          pruneCacheEntry(cache, keys[0], keys, this._vnode)
+          pruneCacheEntry(cache, keys[0], keys, this._vnode)    // 超过缓存限制,清除
         }
       }
 

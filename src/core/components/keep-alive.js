@@ -101,7 +101,7 @@ export default {
       if (cache[key]) {
         // 缓存渲染
         vnode.componentInstance = cache[key].componentInstance
-        remove(keys, key)
+        remove(keys, key)//命中之后会先删除key，再加入到最后面（LRU算法原则，为了记录最近最老使用的）
         keys.push(key)
       } else {
         // 首次渲染
@@ -112,7 +112,7 @@ export default {
         }
       }
 
-      vnode.data.keepAlive = true
+      vnode.data.keepAlive = true  //这个很重要，之后渲染的时候通过这个属性标识
     }
     return vnode
   }

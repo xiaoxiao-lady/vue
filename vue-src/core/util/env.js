@@ -88,15 +88,6 @@ export const nextTick = (function () {
       copies[i]()
     }
   }
-
-  // the nextTick behavior leverages the microtask queue, which can be accessed
-  // via either native Promise.then or MutationObserver.
-  // MutationObserver has wider support, however it is seriously bugged in
-  // UIWebView in iOS >= 9.3.3 when triggered in touch event handlers. It
-  // completely stops working after triggering a few times... so, if native
-  // Promise is available, we will use it:
-  /* istanbul ignore if */
-
   /*
     这里解释一下，一共有Promise、MutationObserver以及setTimeout三种尝试得到timerFunc的方法。
     优先使用Promise，在Promise不存在的情况下使用MutationObserver，这两个方法的回调函数都会在microtask中执行，它们会比setTimeout更早执行，所以优先使用。
@@ -112,11 +103,7 @@ export const nextTick = (function () {
     var logError = err => { console.error(err) }
     timerFunc = () => {
       p.then(nextTickHandler).catch(logError)
-      // in problematic UIWebViews, Promise.then doesn't completely break, but
-      // it can get stuck in a weird state where callbacks are pushed into the
-      // microtask queue but the queue isn't being flushed, until the browser
-      // needs to do some other work, e.g. handle a timer. Therefore we can
-      // "force" the microtask queue to be flushed by adding an empty timer.
+
       if (isIOS) setTimeout(noop)
     }
   } else if (typeof MutationObserver !== 'undefined' && (
@@ -124,8 +111,7 @@ export const nextTick = (function () {
     // PhantomJS and iOS 7.x
     MutationObserver.toString() === '[object MutationObserverConstructor]'
   )) {
-    // use MutationObserver where native Promise is not available,
-    // e.g. PhantomJS IE11, iOS7, Android 4.4
+
     /*新建一个textNode的DOM对象，用MutationObserver绑定该DOM并指定回调函数，在DOM变化的时候则会触发回调,该回调会进入主线程（比任务队列优先执行），即textNode.data = String(counter)时便会加入该回调*/
     var counter = 1
     var observer = new MutationObserver(nextTickHandler)
@@ -138,8 +124,6 @@ export const nextTick = (function () {
       textNode.data = String(counter)
     }
   } else {
-    // fallback to setTimeout
-    /* istanbul ignore next */
     /*使用setTimeout将回调推入任务队列尾部*/
     timerFunc = () => {
       setTimeout(nextTickHandler, 0)
@@ -178,12 +162,9 @@ export const nextTick = (function () {
 })()
 
 let _Set
-/* istanbul ignore if */
 if (typeof Set !== 'undefined' && isNative(Set)) {
-  // use native Set when available.
   _Set = Set
 } else {
-  // a non-standard Set polyfill that only works with primitive keys.
   _Set = class Set implements ISet {
     set: Object;
     constructor () {

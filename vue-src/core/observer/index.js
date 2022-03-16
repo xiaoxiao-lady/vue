@@ -61,7 +61,7 @@ export class Observer {
       /*如果是数组则需要遍历数组的每一个成员进行observe*/
       this.observeArray(value)
     } else {
-      /*如果是对象则直接walk进行绑定*/
+      /*如果是对象则直接walk进行绑定，就是循环绑定响应式Object.definePrototype*/
       this.walk(value)
     }
   }
@@ -187,7 +187,7 @@ export function defineReactive (
     get: function reactiveGetter () {
       /*如果原本对象拥有getter方法则执行*/
       const value = getter ? getter.call(obj) : val
-      if (Dep.target) {
+      if (Dep.target) {  //Dep.target 是一个 Watcher 类型
         /*进行依赖收集*/
         dep.depend()
         if (childOb) {

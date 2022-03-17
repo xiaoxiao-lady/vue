@@ -1,5 +1,5 @@
-import { isObject, hasOwn } from "/my-vue-demo/utils/index";
-import Observer from "/my-vue-demo/Observer";
+import { isObject, hasOwn } from "./utils/index";
+import Observer from "./Observer";
 // observe的作用实例化Observer;
 export function observe(value) {
   if (!isObject()) return;

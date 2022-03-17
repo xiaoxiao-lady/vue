@@ -1,4 +1,4 @@
-import observe from "/my-vue-demo/observe";
+import observe from "./observe";
 
 const obj = {
   a: {

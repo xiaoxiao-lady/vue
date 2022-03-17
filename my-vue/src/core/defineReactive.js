@@ -1,7 +1,7 @@
-import Dep from "/my-vue-demo/Dep";
-import observe from "/my-vue-demo/observe";
+import Dep from "./Dep";
+import observe from "./observe";
 export default function defineReactive(obj, key, val) {
-  let childOb = observe(val); //子元素继续添加响应式
+  // let childOb = observe(val); //子元素继续添加响应式
   const dep = new Dep();
   Object.defineProperty(obj, key, {
     get() {
@@ -12,7 +12,7 @@ export default function defineReactive(obj, key, val) {
       if (val !== newVal) {
         dep.notify(); //通知依赖更改
         val = newVal;
-        childOb = observe(newVal);
+        // childOb = observe(newVal);
       }
     },
   });

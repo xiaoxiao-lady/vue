@@ -9,3 +9,7 @@ export function def(obj, key, val, enumerable) {
     configurable: true,
   });
 }
+export function hasOwn(obj,key){
+  return obj.hasOwnProperty(key)
+
+}

@@ -1,4 +1,4 @@
-import observe from "./observe";
+import { observe } from "./core/observe.js";
 
 const obj = {
   a: {
@@ -16,3 +16,5 @@ const obj = {
 };
 
 observe(obj);
+obj.a = 10;
+console.log(obj.b.j.k);

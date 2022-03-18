@@ -1,5 +1,5 @@
 export function isObject(obj) {
-  return obj !== null && typeof obj === "object";
+  return obj !== null && typeof obj === 'object';
 }
 export function def(obj, key, val, enumerable) {
   Object.defineProperty(obj, key, {
@@ -9,7 +9,6 @@ export function def(obj, key, val, enumerable) {
     configurable: true,
   });
 }
-export function hasOwn(obj,key){
-  return obj.hasOwnProperty(key)
-
+export function hasOwn(obj, key) {
+  return obj.hasOwnProperty(key);
 }

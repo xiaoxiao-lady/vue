@@ -1,4 +1,4 @@
-// 依赖收集和通知
+// 依赖收集和通知，发布者的类
 export default class Dep {
   constructor() {
     this.subs = [];
@@ -11,9 +11,9 @@ export default class Dep {
 
   /* 依赖收集，当存在Dep.target的时候添加观察者对象 */
   depend() {
-    if (Dep.target) {
+    if (Dep.target) {  //target只是自己指定的全局的位置
       // Watcher实例
-      Dep.target.addDep(this);
+      Dep.target.addDep(Dep.target);
     }
   }
 

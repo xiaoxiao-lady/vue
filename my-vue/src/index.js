@@ -13,8 +13,10 @@ const obj = {
       },
     },
   },
+  s: [10, 20, 30],
 };
 
 observe(obj);
 obj.a = 10;
-console.log(obj.b.j.k);
+obj.s.push(40);  //检测出来是数组
+console.log(obj);

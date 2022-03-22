@@ -12,3 +12,5 @@ export function def(obj, key, val, enumerable) {
 export function hasOwn(obj, key) {
   return obj.hasOwnProperty(key);
 }
+/*判断当前浏览器是否支持__proto__这个非标准属性*/
+export const hasProto = '__proto__' in {}

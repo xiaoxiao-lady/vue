@@ -15,8 +15,10 @@ const obj = {
   },
   s: [10, 20, 30],
 };
-
-observe(obj);
-obj.a = 10;
-obj.s.push(40);  //检测出来是数组
 console.log(obj);
+observe(obj);
+class Vue {
+  constructor() {}
+}
+
+window.Vue = Vue; //因为这里不能使用export暴露出去Vue,所以就挂载在全局

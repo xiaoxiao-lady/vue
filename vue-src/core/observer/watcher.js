@@ -79,12 +79,6 @@ export default class Watcher {
       this.getter = parsePath(expOrFn)
       if (!this.getter) {
         this.getter = function () {}
-        process.env.NODE_ENV !== 'production' && warn(
-          `Failed watching path: "${expOrFn}" ` +
-          'Watcher only accepts simple dot-delimited paths. ' +
-          'For full control, use a function instead.',
-          vm
-        )
       }
     }
     this.value = this.lazy

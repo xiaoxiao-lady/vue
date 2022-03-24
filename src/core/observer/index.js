@@ -162,6 +162,7 @@ export function defineReactive (
           }
         }
       }
+      console.log(value)
       return value
     },
     set: function reactiveSetter (newVal) {

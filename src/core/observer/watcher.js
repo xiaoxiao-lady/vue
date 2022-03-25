@@ -50,7 +50,7 @@ export default class Watcher {
     // options
     if (options) {
       this.deep = !!options.deep
-      this.user = !!options.user
+      this.user = !!options.user   //标识是用户自己的定义的watch，还是数据添加响应式的时候加上的渲染watch
       this.lazy = !!options.lazy
       this.sync = !!options.sync
     } else {

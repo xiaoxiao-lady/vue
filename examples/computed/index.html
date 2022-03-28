@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Vue.js github commits example</title>
+  <style>
+
+  </style>
+  <!-- Delete ".min" for console warnings in development -->
+  <script src="../../dist/vue.js"></script>
+</head>
+
+<body>
+  <div id="demo">
+   <h2>{{name}}</h2>
+   <h2>{{firstName}}</h2>
+   <h2>{{lastName}}</h2>
+   <!-- 1.initComputed源码这里设置断点
+   2.在defineReactive的set方法那里设置断点，观察修改data的时候对应的computed的流程
+   3.在执行到的某个位置打断点，方便下次直接进入 -->
+    <button @click="changeFirstName">改变姓氏</button>
+    <button @click="changeLastName">改变名字</button>
+
+  </div>
+  <script src="app.js"></script>
+</body>
+
+</html>

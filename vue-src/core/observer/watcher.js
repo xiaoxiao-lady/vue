@@ -76,6 +76,7 @@ export default class Watcher {
     if (typeof expOrFn === 'function') {
       this.getter = expOrFn
     } else {
+      // parsePath的作用解析a.b.c.d的这种写法，转化为监听最后的d
       this.getter = parsePath(expOrFn)
       if (!this.getter) {
         this.getter = function () {}
@@ -89,7 +90,7 @@ export default class Watcher {
   /**
    * Evaluate the getter, and re-collect dependencies.
    */
-   /*获得getter的值并且重新进行依赖收集*/
+   /*获得getter（传进来需要计算的操作，比如：computed的回调会当成getter传进来）的值并且重新进行依赖收集*/
   get () {
     /*将自身watcher观察者实例设置给Dep.target，用以依赖收集。*/
     pushTarget(this)

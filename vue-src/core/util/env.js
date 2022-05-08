@@ -77,7 +77,7 @@ export const nextTick = (function () {
   /*一个函数指针，指向函数将被推送到任务队列中，等到主线程任务执行完时，任务队列中的timerFunc被调用*/
   let timerFunc
 
-  /*下一个tick时的回调*/
+  /*下一个tick时的回调,在新版本中这个函数名叫flushCallbacks*/
   function nextTickHandler () {
     /*一个标记位，标记等待状态（即函数已经被推入任务队列或者主线程，已经在等待当前栈执行完毕去执行），这样就不需要在push多个回调到callbacks时将timerFunc多次推入任务队列或者主线程*/
     pending = false

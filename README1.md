@@ -31,3 +31,35 @@ vue源码的学习资料
   |--types                              //TS类型声明
   
 ## 项目
+
+
+
+
+
+ 1.Vue初始化过程
+ 2.Vue响应式原理是这么实现的
+ 3.
+
+
+data、computed、watch、methods
+1.为什么data是一个函数
+2. computed和watch区别和使用场景
+3.watch的实现原理
+4.computed的实现原理
+
+
+
+
+
+1.vue组价的通信方式（7种）
+ 
+ 
+
+
+1.vue的生命周期有哪几个，一般在哪个阶段发请求
+2.v-if和v-show的区别，（三个css隐藏属性的区别）
+3.vue的内置指令
+4.v-if 与 v-for 为什么不建议一起使用
+ 
+
+

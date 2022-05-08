@@ -79,20 +79,20 @@ function flushSchedulerQueue () {
       }
       持续执行了一百次watch代表可能存在死循环
     */
-    if (process.env.NODE_ENV !== 'production' && has[id] != null) {
-      circular[id] = (circular[id] || 0) + 1
-      if (circular[id] > MAX_UPDATE_COUNT) {
-        warn(
-          'You may have an infinite update loop ' + (
-            watcher.user
-              ? `in watcher with expression "${watcher.expression}"`
-              : `in a component render function.`
-          ),
-          watcher.vm
-        )
-        break
-      }
-    }
+    // if (process.env.NODE_ENV !== 'production' && has[id] != null) {
+    //   circular[id] = (circular[id] || 0) + 1
+    //   if (circular[id] > MAX_UPDATE_COUNT) {
+    //     warn(
+    //       'You may have an infinite update loop ' + (
+    //         watcher.user
+    //           ? `in watcher with expression "${watcher.expression}"`
+    //           : `in a component render function.`
+    //       ),
+    //       watcher.vm
+    //     )
+    //     break
+    //   }
+    // }
   }
 
   // keep copies of post queues before resetting state

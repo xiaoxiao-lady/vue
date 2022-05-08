@@ -218,23 +218,14 @@ function initComputed(vm: Component, computed: Object) {
     if (process.env.NODE_ENV !== "production") {
       /*getter不存在的时候抛出warning并且给getter赋空函数*/
       if (getter === undefined) {
-        warn(
-          `No getter function has been defined for computed property "${key}".`,
-          vm
-        );
         getter = noop;
       }
     }
-    // create internal watcher for the computed property.
     /*
       为计算属性创建一个内部的监视器Watcher，保存在vm实例的_computedWatchers中
       这里的computedWatcherOptions参数传递了一个lazy为true，会使得watch实例的dirty为true
     */
     watchers[key] = new Watcher(vm, getter, noop, computedWatcherOptions);
-
-    // component-defined computed properties are already defined on the
-    // component prototype. We only need to define computed properties defined
-    // at instantiation here.
     /*组件正在定义的计算属性已经定义在现有组件的原型上则不会进行重复定义*/
     if (!(key in vm)) {
       /*定义计算属性*/
@@ -289,7 +280,7 @@ function createComputedGetter(key) {
     if (watcher) {
       /*实际是脏检查，在计算属性中的依赖发生改变的时候dirty会变成true，在get的时候重新计算计算属性的输出值*/
       if (watcher.dirty) {
-        watcher.evaluate(); //计算computed的结果
+        watcher.evaluate(); //计算computed的结果，赋值到watcher.value上面
       }
       /*依赖收集*/
       if (Dep.target) {
@@ -376,18 +367,6 @@ export function stateMixin(Vue: Class<Component>) {
   propsDef.get = function () {
     return this._props;
   };
-  if (process.env.NODE_ENV !== "production") {
-    dataDef.set = function (newData: Object) {
-      warn(
-        "Avoid replacing instance root $data. " +
-          "Use nested data properties instead.",
-        this
-      );
-    };
-    propsDef.set = function () {
-      warn(`$props is readonly.`, this);
-    };
-  }
   Object.defineProperty(Vue.prototype, "$data", dataDef);
   Object.defineProperty(Vue.prototype, "$props", propsDef);
 

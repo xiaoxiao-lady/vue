@@ -1107,6 +1107,7 @@ function defineReactive (
           }
         }
       }
+      console.log(value);
       return value
     },
     set: function reactiveSetter (newVal) {
@@ -2956,7 +2957,11 @@ var Watcher = function Watcher (
   // options
   if (options) {
     this.deep = !!options.deep;
+<<<<<<< HEAD
     this.user = !!options.user;
+=======
+    this.user = !!options.user; //标识是用户自己的定义的watch，还是数据添加响应式的时候加上的渲染watch
+>>>>>>> 203668eeef7c19ede2e221aa07043f1b4b46422d
     this.lazy = !!options.lazy;
     this.sync = !!options.sync;
   } else {
@@ -4772,7 +4777,10 @@ var KeepAlive = {
       pruneCacheEntry(this$1.cache, key, this$1.keys);
     }
   },
+<<<<<<< HEAD
 
+=======
+>>>>>>> 203668eeef7c19ede2e221aa07043f1b4b46422d
   watch: {
     include: function include (val) {
       pruneCache(this, function (name) { return matches(val, name); });
@@ -4794,15 +4802,22 @@ var KeepAlive = {
       )) {
         return vnode
       }
+<<<<<<< HEAD
 
       var ref = this;
       var cache = ref.cache;
       var keys = ref.keys;
+=======
+      var ref = this;
+      var cache = ref.cache;
+      var keys = ref.keys;//keys的设计就是LRU(最近最少使用原则)算法思想，缓存数量超出限制之后删除利用keys找到最少很久没有使用的
+>>>>>>> 203668eeef7c19ede2e221aa07043f1b4b46422d
       var key = vnode.key == null
         // same constructor may get registered as different local components
         // so cid alone is not enough (#3269)
         ? componentOptions.Ctor.cid + (componentOptions.tag ? ("::" + (componentOptions.tag)) : '')
         : vnode.key;
+<<<<<<< HEAD
       if (cache[key]) {
         vnode.componentInstance = cache[key].componentInstance;
         // make current key freshest
@@ -4818,6 +4833,24 @@ var KeepAlive = {
       }
 
       vnode.data.keepAlive = true;
+=======
+        // 分为首次渲染和缓存渲染
+      if (cache[key]) {
+        // 缓存渲染
+        vnode.componentInstance = cache[key].componentInstance;
+        remove(keys, key);//命中之后会先删除key，再加入到最后面（LRU算法原则，为了记录最近最老使用的）
+        keys.push(key);
+      } else {
+        // 首次渲染
+        cache[key] = vnode;     //缓存数组中存放vnode
+        keys.push(key);
+        if (this.max && keys.length > parseInt(this.max)) {
+          pruneCacheEntry(cache, keys[0], keys, this._vnode);    // 超过缓存限制,清除
+        }
+      }
+
+      vnode.data.keepAlive = true;  //这个很重要，之后渲染的时候通过这个属性标识
+>>>>>>> 203668eeef7c19ede2e221aa07043f1b4b46422d
     }
     return vnode
   }
@@ -10501,3 +10534,7 @@ Vue$3.compile = compileToFunctions;
 return Vue$3;
 
 })));
+<<<<<<< HEAD
+=======
+//# sourceMappingURL=vue.js.map
+>>>>>>> 203668eeef7c19ede2e221aa07043f1b4b46422d

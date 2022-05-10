@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vue.js github commits example</title>
+    <style></style>
+    <!-- Delete ".min" for console warnings in development -->
+    <script src="../../dist/vue.js"></script>
+  </head>
+
+  <body>
+    <div id="demo">
+      <div>hahhaha</div>
+      <p>{{name}}</p>
+      <ul>
+        <li v-for="item in list" v-if="item>1">{{item}}</li>
+      </ul>
+      <h1>正确使用v-for</h1>
+      <ul>
+        <template v-for="item in list" :key="item">
+          <li v-if="item>1">{{item}}</li>
+        </template>
+      </ul>
+      <h1>使用计算属性来避免同时使用v-for与v-if</h1>
+      <ul>
+        <template v-for="item in filterList" :key="item">
+          <li>{{item}}</li>
+        </template>
+      </ul>
+    </div>
+    <script src="./app.js"></script>
+  </body>
+</html>

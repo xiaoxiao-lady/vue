@@ -1,3 +1,5 @@
+import { nextTick } from "process";
+
 var apiURL = "https://api.github.com/repos/vuejs/vue/commits?per_page=3&sha=";
 
 /**
@@ -6,18 +8,11 @@ var apiURL = "https://api.github.com/repos/vuejs/vue/commits?per_page=3&sha=";
 
 var demo = new Vue({
   el: "#demo",
-
   data: {
-    name: "haha",
-    checkedArr:[true,false]
+    num: 0,
   },
+  created: function () {
 
-  created: function () {},
-
+  },
   watch: {},
-  computed: {},
-
-  filters: {},
-
-  methods: {},
 });

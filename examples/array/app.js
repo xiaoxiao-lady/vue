@@ -8,16 +8,21 @@ var demo = new Vue({
   el: "#demo",
 
   data: {
-    name: "haha",
-    checkedArr:[true,false]
+    list:[1,2,3,4]
   },
 
-  created: function () {},
+  created: function () {
 
+  },
+  mounted(){
+     this.list.push(5)
+  },
   watch: {},
-  computed: {},
+  computed: {
 
-  filters: {},
+  },
 
-  methods: {},
+  methods: {
+
+  },
 });

@@ -22,8 +22,8 @@
       </ul>
       <h1>使用计算属性来避免同时使用v-for与v-if</h1>
       <ul>
-        <template v-for="item in filterList" :key="item">
-          <li>{{item}}</li>
+        <template v-for="(item,key,i) in obj" :key="item">
+          <li>{{item}} {{key}}</li>
         </template>
       </ul>
     </div>

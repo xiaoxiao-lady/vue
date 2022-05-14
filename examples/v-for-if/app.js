@@ -8,6 +8,10 @@ var demo = new Vue({
   data: {
     name: "haha",
     list: [1, 3, 4],
+    obj: {
+      name: "jaa",
+      age: 23,
+    },
   },
 
   created: function () {},

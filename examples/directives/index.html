@@ -7,7 +7,37 @@
 
   <body>
     <div>hahhaha</div>
+<<<<<<< HEAD
     <input type="radio" name="sex" value="apple" v-model="checked[0]">苹果
     <input type="radio" name="sex" value="apple" v-model="checked[0]">苹果
+=======
+    <script>
+      // with (this) {
+      //   return _l(3, function (a, index) {
+      //     return name ? _c("div", { key: index }) : _e();
+      //   });
+      // }
+      with (this) {
+        return _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: name,
+              expression: "name",
+            },
+          ],
+          attrs: { type: "text" },
+          domProps: { value: name },
+          on: {
+            input: function ($event) {
+              if ($event.target.composing) return;
+              name = $event.target.value;
+            },
+          },
+        });
+      }
+    </script>
+>>>>>>> 49f07d2f7d45d014bba17935c8e02f18119b11a0
   </body>
 </html>

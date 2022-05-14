@@ -1,70 +1,127 @@
-# learnVue
+[CN](README.md) / [EN](README_EN.md)
 
-study 分子里面是带有中文注释的，想要看 vue 源码 master 上面就是
+## mini-vue  [![github](https://img.shields.io/badge/%E5%82%AC%E5%AD%A6%E7%A4%BE-mini--vue-blue)](https://github.com/cuixiaorui/mini-vue)
 
-## 介绍
+实现最简 vue3 模型，用于深入学习 vue3， 让你更轻松的理解 vue3 的核心逻辑
 
-Vue.js 源码分析，记录了个人学习 Vue.js 源码的过程中的一些心得以及收获。以及对于 Vue 框架，周边库的一些个人见解。
+## Usage
 
-在学习的过程中我为 Vue.js（2.3.0）、Vuex（2.4.0）、Vue-router（3.0.1）加上了注释，分别在文件夹[vue-src](./vue-src)、[vuex-src](./vuex-src)以及[vue-router-src](./vue-router-src)中，希望可以帮助有需要的同学更好地学习理解 Vue.js 及周边库的源码。
+[B 站](https://www.bilibili.com/video/BV1Zy4y1J73E) 提供了视频讲解使用方式
 
-感谢[尤大](https://github.com/yyx990803)提高生产力。
+历经半年我把这个项目做成了一套系列视频课
 
-本项目希望对 Vue.js 做更进一步的探索与学习，Vue.js 基础内容请参考 Vue.js 官网，[https://cn.vuejs.org/v2/guide/](https://cn.vuejs.org/v2/guide/)。
-可能会有理解存在偏差的地方，欢迎提 issue 指出，共同学习，共同进步。
+[【课程介绍】](https://www.bilibili.com/video/BV16Z4y1r7Wp?spm_id_from=333.999.0.0)
 
----
+课程的目标是通过构建自己的 mini-vue3 （同这个库一个复杂级别）来深入学习理解 vue3 源码
 
-## 目录
+只有手写一遍，才能真正的掌握源码
 
-### 源码相关
+进阶高级前端的编程思想有哪些
 
-[Vue.js 响应式原理](./docs/响应式原理.MarkDown)
+如何掌握 Vue3 源码原理实现
 
-[Vue.js 依赖收集](./docs/依赖收集.MarkDown)
+面试如何脱颖而出
 
-[从 Vue.js 源码角度再看数据绑定](./docs/从源码角度再看数据绑定.MarkDown)
+帮你解决以上痛点问题 [胜利]
 
-[Vue.js 事件机制](./docs/Vue事件机制.MarkDown)
+vx：cuixr1314
 
-[VNode 节点(Vue.js 实现)](./docs/VNode节点.MarkDown)
+备注一下： github mini-vue
 
-[Virtual DOM 与 diff(Vue.js 实现)](<./docs/VirtualDOM与diff(Vue实现).MarkDown>)
+## Why
 
-[聊聊 Vue.js 的 template 编译](./docs/聊聊Vue的template编译.MarkDown)
+当我们需要深入学习 vue3 时，我们就需要看源码来学习，但是像这种工业级别的库，源码中有很多逻辑是用于处理边缘情况或者是兼容处理逻辑，是不利于我们学习的。
 
-[Vue.js 异步更新 DOM 策略及 nextTick](./docs/Vue.js异步更新DOM策略及nextTick.MarkDown)
+我们应该关注于核心逻辑，而这个库的目的就是把 vue3 源码中最核心的逻辑剥离出来，只留下核心逻辑，以供大家学习。
 
-[从 template 到 DOM（Vue.js 源码角度看内部运行机制）](<./docs/从template到DOM(Vue.js源码角度看内部运行机制).MarkDown>)
+## How
 
-[Vuex 源码解析](./docs/Vuex源码解析.MarkDown)
+基于 vue3 的功能点，一点一点的拆分出来。
 
-[聊聊 keep-alive 组件的使用及其实现原理](./docs/聊聊keep-alive组件的使用及其实现原理.MarkDown)
+代码命名会保持和源码中的一致，方便大家通过命名去源码中查找逻辑。
 
-### 随笔杂谈
+### Tasking
 
-[Vue 组件间通信](./docs/Vue组件间通信.MarkDown)
+#### runtime-core
 
-[说说 element 组件库 broadcast 与 dispatch](./docs/说说element组件库broadcast与dispatch.MarkDown)
+- [x] 支持组件类型
+- [x] 支持 element 类型
+- [x] 初始化 props
+- [x] setup 可获取 props 和 context
+- [x] 支持 component emit
+- [x] 支持 proxy
+- [x] 可以在 render 函数中获取 setup 返回的对象
+- [x] nextTick 的实现
+- [x] 支持 getCurrentInstance
+- [x] 支持 provide/inject
+- [x] 支持最基础的 slots
+- [x] 支持 Text 类型节点
+- [x] 支持 $el api
 
----
 
-## 对于新手同学
+#### reactivity
 
-由于以上内容都是针对 Vue.js 源码进行讲解了，可能有一些不太熟悉源码的同学读起来感觉晦涩难懂。
+目标是用自己的 reactivity 支持现有的 demo 运行
 
-笔者撰写的[《剖析 Vue.js 内部运行机制》](https://juejin.im/book/5a36661851882538e2259c0f)或许可以帮到你。
+- [x] reactive 的实现
+- [x] ref 的实现
+- [x] readonly 的实现
+- [x] computed 的实现
+- [x] track 依赖收集
+- [x] trigger 触发依赖
+- [x] 支持 isReactive
+- [x] 支持嵌套 reactive
+- [x] 支持 toRaw
+- [x] 支持 effect.scheduler
+- [x] 支持 effect.stop
+- [x] 支持 isReadonly
+- [x] 支持 isProxy
+- [x] 支持 shallowReadonly
+- [x] 支持 proxyRefs
 
-## 关于作者
+### compiler-core
+- [x] 解析插值
+- [x] 解析 element
+- [x] 解析 text
 
-作者： 染陌
+### runtime-dom
+- [x] 支持 custom renderer 
 
-Email：answershuto@gmail.com
+### build
 
-Github: [https://github.com/answershuto](https://github.com/answershuto)
+```shell
+pnpm build
+```
 
-知乎：[https://www.zhihu.com/people/cao-yang-49/activities](https://www.zhihu.com/people/cao-yang-49/activities)
+### example
 
-掘金：[https://juejin.im/user/58f87ae844d9040069ca7507](https://juejin.im/user/58f87ae844d9040069ca7507)
+通过 server 的方式打开 example/\* 下的 index.html 即可
 
-对内容有任何疑问，欢迎联系我。
+>  推荐使用 [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)
+
+### 初始化
+
+#### 流程图
+![初始化流程图](https://user-images.githubusercontent.com/12064746/138114565-3e0eecbb-7fd0-4203-bf36-5e5fd8003ce0.png)
+
+> 可加 vx：cuixr1314  获取所有脑图(备注：github mini-vue 领取脑图)
+#### 关键函数调用图
+
+
+![关键函数调用图2](https://user-gold-cdn.xitu.io/2020/6/22/172dc08840e25b42?w=1816&h=934&f=png&s=550722)
+
+> 可以基于函数名快速搜索到源码内容
+
+### update
+
+#### 流程图
+
+![image](https://user-images.githubusercontent.com/12064746/138115157-1f4fb8a2-7e60-412d-96de-12e68eb0288c.png)
+
+#### 关键函数调用图
+
+![image](https://user-images.githubusercontent.com/12064746/138114969-9139e4af-b2df-41b2-a5d9-069d8b41903c.png)
+
+
+> 可以基于函数名快速搜索到源码内容
+

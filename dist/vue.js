@@ -974,7 +974,7 @@ var arrayKeys = Object.getOwnPropertyNames(arrayMethods);
  * under a frozen data structure. Converting it would defeat the optimization.
  */
 var observerState = {
-  shouldConvert: true,
+  shouldConvert: true
 };
 
 /**
@@ -983,6 +983,7 @@ var observerState = {
  * object's property keys into getter/setters that
  * collect dependencies and dispatches updates.
  */
+<<<<<<< HEAD
 var Observer = function Observer(value) {
   this.value = value;
   this.dep = new Dep();
@@ -990,6 +991,17 @@ var Observer = function Observer(value) {
   def(value, "__ob__", this);
   if (Array.isArray(value)) {
     var augment = hasProto ? protoAugment : copyAugment;
+=======
+var Observer = function Observer (value) {
+  this.value = value;
+  this.dep = new Dep();
+  this.vmCount = 0;
+  def(value, '__ob__', this);
+  if (Array.isArray(value)) {
+    var augment = hasProto
+      ? protoAugment
+      : copyAugment;
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
     augment(value, arrayMethods, arrayKeys);
     this.observeArray(value);
   } else {
@@ -1024,7 +1036,11 @@ Observer.prototype.observeArray = function observeArray (items) {
  * Augment an target Object or Array by intercepting
  * the prototype chain using __proto__
  */
+<<<<<<< HEAD
 function protoAugment(target, src, keys) {
+=======
+function protoAugment (target, src, keys) {
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   /* eslint-disable no-proto */
   target.__proto__ = src;
   /* eslint-enable no-proto */
@@ -1035,7 +1051,11 @@ function protoAugment(target, src, keys) {
  * hidden properties.
  */
 /* istanbul ignore next */
+<<<<<<< HEAD
 function copyAugment(target, src, keys) {
+=======
+function copyAugment (target, src, keys) {
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   for (var i = 0, l = keys.length; i < l; i++) {
     var key = keys[i];
     def(target, key, src[key]);
@@ -1047,12 +1067,21 @@ function copyAugment(target, src, keys) {
  * returns the new observer if successfully observed,
  * or the existing observer if the value already has one.
  */
+<<<<<<< HEAD
 function observe(value, asRootData) {
   if (!isObject(value) || value instanceof VNode) {
     return;
   }
   var ob;
   if (hasOwn(value, "__ob__") && value.__ob__ instanceof Observer) {
+=======
+function observe (value, asRootData) {
+  if (!isObject(value) || value instanceof VNode) {
+    return
+  }
+  var ob;
+  if (hasOwn(value, '__ob__') && value.__ob__ instanceof Observer) {
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
     ob = value.__ob__;
   } else if (
     observerState.shouldConvert &&
@@ -1066,13 +1095,21 @@ function observe(value, asRootData) {
   if (asRootData && ob) {
     ob.vmCount++;
   }
+<<<<<<< HEAD
   return ob;
+=======
+  return ob
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
 }
 
 /**
  * Define a reactive property on an Object.
  */
+<<<<<<< HEAD
 function defineReactive(
+=======
+function defineReactive (
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   obj,
   key,
   val,
@@ -1083,7 +1120,11 @@ function defineReactive(
 
   var property = Object.getOwnPropertyDescriptor(obj, key);
   if (property && property.configurable === false) {
+<<<<<<< HEAD
     return;
+=======
+    return
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   }
 
   // cater for pre-defined getter/setters
@@ -1094,9 +1135,14 @@ function defineReactive(
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,
+<<<<<<< HEAD
     get: function reactiveGetter() {
       var value = getter ? getter.call(obj) : val;
       debugger;
+=======
+    get: function reactiveGetter () {
+      var value = getter ? getter.call(obj) : val;
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
       if (Dep.target) {
         dep.depend();
         if (childOb) {
@@ -1107,6 +1153,7 @@ function defineReactive(
         }
       }
       console.log(value);
+<<<<<<< HEAD
       return value;
     },
     set: function reactiveSetter(newVal) {
@@ -1118,6 +1165,18 @@ function defineReactive(
       }
       /* eslint-enable no-self-compare */
       if ("development" !== "production" && customSetter) {
+=======
+      return value
+    },
+    set: function reactiveSetter (newVal) {
+      var value = getter ? getter.call(obj) : val;
+      /* eslint-disable no-self-compare */
+      if (newVal === value || (newVal !== newVal && value !== value)) {
+        return
+      }
+      /* eslint-enable no-self-compare */
+      if ("development" !== 'production' && customSetter) {
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
         customSetter();
       }
       if (setter) {
@@ -1127,7 +1186,11 @@ function defineReactive(
       }
       childOb = !shallow && observe(newVal);
       dep.notify();
+<<<<<<< HEAD
     },
+=======
+    }
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   });
 }
 
@@ -1136,6 +1199,7 @@ function defineReactive(
  * triggers change notification if the property doesn't
  * already exist.
  */
+<<<<<<< HEAD
 function set(target, key, val) {
   if (Array.isArray(target) && isValidArrayIndex(key)) {
     target.length = Math.max(target.length, key);
@@ -1162,11 +1226,39 @@ function set(target, key, val) {
   defineReactive(ob.value, key, val);
   ob.dep.notify();
   return val;
+=======
+function set (target, key, val) {
+  if (Array.isArray(target) && isValidArrayIndex(key)) {
+    target.length = Math.max(target.length, key);
+    target.splice(key, 1, val);
+    return val
+  }
+  if (hasOwn(target, key)) {
+    target[key] = val;
+    return val
+  }
+  var ob = (target).__ob__;
+  if (target._isVue || (ob && ob.vmCount)) {
+    "development" !== 'production' && warn(
+      'Avoid adding reactive properties to a Vue instance or its root $data ' +
+      'at runtime - declare it upfront in the data option.'
+    );
+    return val
+  }
+  if (!ob) {
+    target[key] = val;
+    return val
+  }
+  defineReactive(ob.value, key, val);
+  ob.dep.notify();
+  return val
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
 }
 
 /**
  * Delete a property and trigger change if necessary.
  */
+<<<<<<< HEAD
 function del(target, key) {
   if (Array.isArray(target) && isValidArrayIndex(key)) {
     target.splice(key, 1);
@@ -1187,6 +1279,27 @@ function del(target, key) {
   delete target[key];
   if (!ob) {
     return;
+=======
+function del (target, key) {
+  if (Array.isArray(target) && isValidArrayIndex(key)) {
+    target.splice(key, 1);
+    return
+  }
+  var ob = (target).__ob__;
+  if (target._isVue || (ob && ob.vmCount)) {
+    "development" !== 'production' && warn(
+      'Avoid deleting properties on a Vue instance or its root $data ' +
+      '- just set it to null.'
+    );
+    return
+  }
+  if (!hasOwn(target, key)) {
+    return
+  }
+  delete target[key];
+  if (!ob) {
+    return
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   }
   ob.dep.notify();
 }
@@ -1195,7 +1308,11 @@ function del(target, key) {
  * Collect dependencies on array elements when the array is touched, since
  * we cannot intercept array element access like property getters.
  */
+<<<<<<< HEAD
 function dependArray(value) {
+=======
+function dependArray (value) {
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   for (var e = (void 0), i = 0, l = value.length; i < l; i++) {
     e = value[i];
     e && e.__ob__ && e.__ob__.dep.depend();
@@ -2959,7 +3076,15 @@ var Watcher = function Watcher (
   // options
   if (options) {
     this.deep = !!options.deep;
+<<<<<<< HEAD
     this.user = !!options.user; //标识是用户自己的定义的watch，还是数据添加响应式的时候加上的渲染watch
+=======
+<<<<<<< HEAD
+    this.user = !!options.user;
+=======
+    this.user = !!options.user; //标识是用户自己的定义的watch，还是数据添加响应式的时候加上的渲染watch
+>>>>>>> 203668eeef7c19ede2e221aa07043f1b4b46422d
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
     this.lazy = !!options.lazy;
     this.sync = !!options.sync;
   } else {
@@ -3210,7 +3335,10 @@ function initState (vm) {
     observe(vm._data = {}, true /* asRootData */);
   }
   if (opts.computed) { initComputed(vm, opts.computed); }
+<<<<<<< HEAD
   debugger
+=======
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   if (opts.watch && opts.watch !== nativeWatch) {
     initWatch(vm, opts.watch);
   }
@@ -3323,6 +3451,16 @@ function initComputed (vm, computed) {
   for (var key in computed) {
     var userDef = computed[key];
     var getter = typeof userDef === 'function' ? userDef : userDef.get;
+<<<<<<< HEAD
+=======
+    if ("development" !== 'production' && getter == null) {
+      warn(
+        ("Getter is missing for computed property \"" + key + "\"."),
+        vm
+      );
+    }
+
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
     if (!isSSR) {
       // create internal watcher for the computed property.
       watchers[key] = new Watcher(
@@ -3485,7 +3623,10 @@ function stateMixin (Vue) {
     options
   ) {
     var vm = this;
+<<<<<<< HEAD
     debugger
+=======
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
     if (isPlainObject(cb)) {
       return createWatcher(vm, expOrFn, cb, options)
     }
@@ -4770,6 +4911,13 @@ var KeepAlive = {
       pruneCacheEntry(this$1.cache, key, this$1.keys);
     }
   },
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+=======
+>>>>>>> 203668eeef7c19ede2e221aa07043f1b4b46422d
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   watch: {
     include: function include (val) {
       pruneCache(this, function (name) { return matches(val, name); });
@@ -4791,14 +4939,47 @@ var KeepAlive = {
       )) {
         return vnode
       }
+<<<<<<< HEAD
       var ref = this;
       var cache = ref.cache;
       var keys = ref.keys;//keys的设计就是LRU(最近最少使用原则)算法思想，缓存数量超出限制之后删除利用keys找到最少很久没有使用的
+=======
+<<<<<<< HEAD
+
+      var ref = this;
+      var cache = ref.cache;
+      var keys = ref.keys;
+=======
+      var ref = this;
+      var cache = ref.cache;
+      var keys = ref.keys;//keys的设计就是LRU(最近最少使用原则)算法思想，缓存数量超出限制之后删除利用keys找到最少很久没有使用的
+>>>>>>> 203668eeef7c19ede2e221aa07043f1b4b46422d
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
       var key = vnode.key == null
         // same constructor may get registered as different local components
         // so cid alone is not enough (#3269)
         ? componentOptions.Ctor.cid + (componentOptions.tag ? ("::" + (componentOptions.tag)) : '')
         : vnode.key;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+      if (cache[key]) {
+        vnode.componentInstance = cache[key].componentInstance;
+        // make current key freshest
+        remove(keys, key);
+        keys.push(key);
+      } else {
+        cache[key] = vnode;
+        keys.push(key);
+        // prune oldest entry
+        if (this.max && keys.length > parseInt(this.max)) {
+          pruneCacheEntry(cache, keys[0], keys, this._vnode);
+        }
+      }
+
+      vnode.data.keepAlive = true;
+=======
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
         // 分为首次渲染和缓存渲染
       if (cache[key]) {
         // 缓存渲染
@@ -4815,6 +4996,10 @@ var KeepAlive = {
       }
 
       vnode.data.keepAlive = true;  //这个很重要，之后渲染的时候通过这个属性标识
+<<<<<<< HEAD
+=======
+>>>>>>> 203668eeef7c19ede2e221aa07043f1b4b46422d
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
     }
     return vnode
   }
@@ -6388,23 +6573,39 @@ function getAndRemoveAttr (
 /**
  * Cross-platform code generation for component v-model
  */
+<<<<<<< HEAD
 function genComponentModel(
+=======
+function genComponentModel (
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   el,
   value,
   modifiers
 ) {
+<<<<<<< HEAD
   debugger;
+=======
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   var ref = modifiers || {};
   var number = ref.number;
   var trim = ref.trim;
 
+<<<<<<< HEAD
   var baseValueExpression = "$$v";
+=======
+  var baseValueExpression = '$$v';
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   var valueExpression = baseValueExpression;
   if (trim) {
     valueExpression =
       "(typeof " + baseValueExpression + " === 'string'" +
+<<<<<<< HEAD
       "? " + baseValueExpression + ".trim()" +
       ": " + baseValueExpression + ")";
+=======
+        "? " + baseValueExpression + ".trim()" +
+        ": " + baseValueExpression + ")";
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   }
   if (number) {
     valueExpression = "_n(" + valueExpression + ")";
@@ -6414,19 +6615,35 @@ function genComponentModel(
   el.model = {
     value: ("(" + value + ")"),
     expression: ("\"" + value + "\""),
+<<<<<<< HEAD
     callback: ("function (" + baseValueExpression + ") {" + assignment + "}"),
+=======
+    callback: ("function (" + baseValueExpression + ") {" + assignment + "}")
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   };
 }
 
 /**
  * Cross-platform codegen helper for generating v-model value assignment code.
  */
+<<<<<<< HEAD
 function genAssignmentCode(value, assignment) {
   var res = parseModel(value);
   if (res.key === null) {
     return (value + "=" + assignment);
   } else {
     return ("$set(" + (res.exp) + ", " + (res.key) + ", " + assignment + ")");
+=======
+function genAssignmentCode (
+  value,
+  assignment
+) {
+  var res = parseModel(value);
+  if (res.key === null) {
+    return (value + "=" + assignment)
+  } else {
+    return ("$set(" + (res.exp) + ", " + (res.key) + ", " + assignment + ")")
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   }
 }
 
@@ -6454,6 +6671,7 @@ var expressionEndPos;
 
 
 
+<<<<<<< HEAD
 function parseModel(val) {
   len = val.length;
 
@@ -6469,6 +6687,23 @@ function parseModel(val) {
         exp: val,
         key: null,
       };
+=======
+function parseModel (val) {
+  len = val.length;
+
+  if (val.indexOf('[') < 0 || val.lastIndexOf(']') < len - 1) {
+    index$1 = val.lastIndexOf('.');
+    if (index$1 > -1) {
+      return {
+        exp: val.slice(0, index$1),
+        key: '"' + val.slice(index$1 + 1) + '"'
+      }
+    } else {
+      return {
+        exp: val,
+        key: null
+      }
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
     }
   }
 
@@ -6480,13 +6715,18 @@ function parseModel(val) {
     /* istanbul ignore if */
     if (isStringStart(chr)) {
       parseString(chr);
+<<<<<<< HEAD
     } else if (chr === 0x5b) {
+=======
+    } else if (chr === 0x5B) {
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
       parseBracket(chr);
     }
   }
 
   return {
     exp: val.slice(0, expressionPos),
+<<<<<<< HEAD
     key: val.slice(expressionPos + 1, expressionEndPos),
   };
 }
@@ -6504,12 +6744,32 @@ function isStringStart(chr) {
 }
 
 function parseBracket(chr) {
+=======
+    key: val.slice(expressionPos + 1, expressionEndPos)
+  }
+}
+
+function next () {
+  return str.charCodeAt(++index$1)
+}
+
+function eof () {
+  return index$1 >= len
+}
+
+function isStringStart (chr) {
+  return chr === 0x22 || chr === 0x27
+}
+
+function parseBracket (chr) {
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   var inBracket = 1;
   expressionPos = index$1;
   while (!eof()) {
     chr = next();
     if (isStringStart(chr)) {
       parseString(chr);
+<<<<<<< HEAD
       continue;
     }
     if (chr === 0x5b) { inBracket++; }
@@ -6517,16 +6777,33 @@ function parseBracket(chr) {
     if (inBracket === 0) {
       expressionEndPos = index$1;
       break;
+=======
+      continue
+    }
+    if (chr === 0x5B) { inBracket++; }
+    if (chr === 0x5D) { inBracket--; }
+    if (inBracket === 0) {
+      expressionEndPos = index$1;
+      break
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
     }
   }
 }
 
+<<<<<<< HEAD
 function parseString(chr) {
+=======
+function parseString (chr) {
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   var stringQuote = chr;
   while (!eof()) {
     chr = next();
     if (chr === stringQuote) {
+<<<<<<< HEAD
       break;
+=======
+      break
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
     }
   }
 }
@@ -9688,11 +9965,19 @@ var baseDirectives = {
 
 /*  */
 
+<<<<<<< HEAD
 var CodegenState = function CodegenState(options) {
   this.options = options;
   this.warn = options.warn || baseWarn;
   this.transforms = pluckModuleFunction(options.modules, "transformCode");
   this.dataGenFns = pluckModuleFunction(options.modules, "genData");
+=======
+var CodegenState = function CodegenState (options) {
+  this.options = options;
+  this.warn = options.warn || baseWarn;
+  this.transforms = pluckModuleFunction(options.modules, 'transformCode');
+  this.dataGenFns = pluckModuleFunction(options.modules, 'genData');
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   this.directives = extend(extend({}, baseDirectives), options.directives);
   var isReservedTag = options.isReservedTag || no;
   this.maybeComponent = function (el) { return !isReservedTag(el.tag); };
@@ -9702,7 +9987,11 @@ var CodegenState = function CodegenState(options) {
 
 
 
+<<<<<<< HEAD
 function generate(
+=======
+function generate (
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   ast,
   options
 ) {
@@ -9710,6 +9999,7 @@ function generate(
   var code = ast ? genElement(ast, state) : '_c("div")';
   return {
     render: ("with(this){return " + code + "}"),
+<<<<<<< HEAD
     staticRenderFns: state.staticRenderFns,
   };
 }
@@ -9727,6 +10017,25 @@ function genElement(el, state) {
     return genChildren(el, state) || "void 0";
   } else if (el.tag === "slot") {
     return genSlot(el, state);
+=======
+    staticRenderFns: state.staticRenderFns
+  }
+}
+
+function genElement (el, state) {
+  if (el.staticRoot && !el.staticProcessed) {
+    return genStatic(el, state)
+  } else if (el.once && !el.onceProcessed) {
+    return genOnce(el, state)
+  } else if (el.for && !el.forProcessed) {
+    return genFor(el, state)
+  } else if (el.if && !el.ifProcessed) {
+    return genIf(el, state)
+  } else if (el.tag === 'template' && !el.slotTarget) {
+    return genChildren(el, state) || 'void 0'
+  } else if (el.tag === 'slot') {
+    return genSlot(el, state)
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   } else {
     // component or element
     var code;
@@ -9736,17 +10045,26 @@ function genElement(el, state) {
       var data = el.plain ? undefined : genData$2(el, state);
 
       var children = el.inlineTemplate ? null : genChildren(el, state, true);
+<<<<<<< HEAD
       code = "_c('" + (el.tag) + "'" + (data ? ("," + data) : "") + (children ? ("," + children) : "") + ")";
+=======
+      code = "_c('" + (el.tag) + "'" + (data ? ("," + data) : '') + (children ? ("," + children) : '') + ")";
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
     }
     // module transforms
     for (var i = 0; i < state.transforms.length; i++) {
       code = state.transforms[i](el, code);
     }
+<<<<<<< HEAD
     return code;
+=======
+    return code
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   }
 }
 
 // hoist static sub-trees out
+<<<<<<< HEAD
 function genStatic(el, state) {
   el.staticProcessed = true;
   state.staticRenderFns.push(("with(this){return " + (genElement(el, state)) + "}"));
@@ -9760,15 +10078,35 @@ function genOnce(el, state) {
     return genIf(el, state);
   } else if (el.staticInFor) {
     var key = "";
+=======
+function genStatic (el, state) {
+  el.staticProcessed = true;
+  state.staticRenderFns.push(("with(this){return " + (genElement(el, state)) + "}"));
+  return ("_m(" + (state.staticRenderFns.length - 1) + (el.staticInFor ? ',true' : '') + ")")
+}
+
+// v-once
+function genOnce (el, state) {
+  el.onceProcessed = true;
+  if (el.if && !el.ifProcessed) {
+    return genIf(el, state)
+  } else if (el.staticInFor) {
+    var key = '';
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
     var parent = el.parent;
     while (parent) {
       if (parent.for) {
         key = parent.key;
+<<<<<<< HEAD
         break;
+=======
+        break
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
       }
       parent = parent.parent;
     }
     if (!key) {
+<<<<<<< HEAD
       "development" !== "production" &&
         state.warn("v-once can only be used inside v-for that is keyed. ");
       return genElement(el, state);
@@ -9780,27 +10118,53 @@ function genOnce(el, state) {
 }
 
 function genIf(
+=======
+      "development" !== 'production' && state.warn(
+        "v-once can only be used inside v-for that is keyed. "
+      );
+      return genElement(el, state)
+    }
+    return ("_o(" + (genElement(el, state)) + "," + (state.onceId++) + "," + key + ")")
+  } else {
+    return genStatic(el, state)
+  }
+}
+
+function genIf (
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   el,
   state,
   altGen,
   altEmpty
 ) {
   el.ifProcessed = true; // avoid recursion
+<<<<<<< HEAD
   return genIfConditions(el.ifConditions.slice(), state, altGen, altEmpty);
 }
 
 function genIfConditions(
+=======
+  return genIfConditions(el.ifConditions.slice(), state, altGen, altEmpty)
+}
+
+function genIfConditions (
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   conditions,
   state,
   altGen,
   altEmpty
 ) {
   if (!conditions.length) {
+<<<<<<< HEAD
     return altEmpty || "_e()";
+=======
+    return altEmpty || '_e()'
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   }
 
   var condition = conditions.shift();
   if (condition.exp) {
+<<<<<<< HEAD
     return ("(" + (condition.exp) + ")?" + (genTernaryExp(
       condition.block
     )) + ":" + (genIfConditions(conditions, state, altGen, altEmpty)));
@@ -9819,6 +10183,24 @@ function genIfConditions(
 }
 
 function genFor(
+=======
+    return ("(" + (condition.exp) + ")?" + (genTernaryExp(condition.block)) + ":" + (genIfConditions(conditions, state, altGen, altEmpty)))
+  } else {
+    return ("" + (genTernaryExp(condition.block)))
+  }
+
+  // v-if with v-once should generate code like (a)?_m(0):_m(1)
+  function genTernaryExp (el) {
+    return altGen
+      ? altGen(el, state)
+      : el.once
+        ? genOnce(el, state)
+        : genElement(el, state)
+  }
+}
+
+function genFor (
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   el,
   state,
   altGen,
@@ -9826,6 +10208,7 @@ function genFor(
 ) {
   var exp = el.for;
   var alias = el.alias;
+<<<<<<< HEAD
   var iterator1 = el.iterator1 ? ("," + (el.iterator1)) : "";
   var iterator2 = el.iterator2 ? ("," + (el.iterator2)) : "";
 
@@ -9834,17 +10217,32 @@ function genFor(
     state.maybeComponent(el) &&
     el.tag !== "slot" &&
     el.tag !== "template" &&
+=======
+  var iterator1 = el.iterator1 ? ("," + (el.iterator1)) : '';
+  var iterator2 = el.iterator2 ? ("," + (el.iterator2)) : '';
+
+  if ("development" !== 'production' &&
+    state.maybeComponent(el) &&
+    el.tag !== 'slot' &&
+    el.tag !== 'template' &&
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
     !el.key
   ) {
     state.warn(
       "<" + (el.tag) + " v-for=\"" + alias + " in " + exp + "\">: component lists rendered with " +
+<<<<<<< HEAD
         "v-for should have explicit keys. " +
         "See https://vuejs.org/guide/list.html#key for more info.",
+=======
+      "v-for should have explicit keys. " +
+      "See https://vuejs.org/guide/list.html#key for more info.",
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
       true /* tip */
     );
   }
 
   el.forProcessed = true; // avoid recursion
+<<<<<<< HEAD
   return (
     (altHelper || "_l") + "((" + exp + ")," +
     "function(" + alias + iterator1 + iterator2 + "){" +
@@ -9855,11 +10253,25 @@ function genFor(
 
 function genData$2(el, state) {
   var data = "{";
+=======
+  return (altHelper || '_l') + "((" + exp + ")," +
+    "function(" + alias + iterator1 + iterator2 + "){" +
+      "return " + ((altGen || genElement)(el, state)) +
+    '})'
+}
+
+function genData$2 (el, state) {
+  var data = '{';
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
 
   // directives first.
   // directives may mutate the el's other properties before they are generated.
   var dirs = genDirectives(el, state);
+<<<<<<< HEAD
   if (dirs) { data += dirs + ","; }
+=======
+  if (dirs) { data += dirs + ','; }
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
 
   // key
   if (el.key) {
@@ -9919,7 +10331,11 @@ function genData$2(el, state) {
       data += inlineTemplate + ",";
     }
   }
+<<<<<<< HEAD
   data = data.replace(/,$/, "") + "}";
+=======
+  data = data.replace(/,$/, '') + '}';
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   // v-bind data wrap
   if (el.wrapData) {
     data = el.wrapData(data);
@@ -9928,6 +10344,7 @@ function genData$2(el, state) {
   if (el.wrapListeners) {
     data = el.wrapListeners(data);
   }
+<<<<<<< HEAD
   return data;
 }
 
@@ -9936,6 +10353,15 @@ function genDirectives(el, state) {
   var dirs = el.directives;
   if (!dirs) { return; }
   var res = "directives:[";
+=======
+  return data
+}
+
+function genDirectives (el, state) {
+  var dirs = el.directives;
+  if (!dirs) { return }
+  var res = 'directives:[';
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   var hasRuntime = false;
   var i, l, dir, needRuntime;
   for (i = 0, l = dirs.length; i < l; i++) {
@@ -9949,6 +10375,7 @@ function genDirectives(el, state) {
     }
     if (needRuntime) {
       hasRuntime = true;
+<<<<<<< HEAD
       res += "{name:\"" + (dir.name) + "\",rawName:\"" + (dir.rawName) + "\"" + (dir.value
           ? (",value:(" + (dir.value) + "),expression:" + (JSON.stringify(dir.value)))
           : "") + (dir.arg ? (",arg:\"" + (dir.arg) + "\"") : "") + (dir.modifiers ? (",modifiers:" + (JSON.stringify(dir.modifiers))) : "") + "},";
@@ -9989,11 +10416,45 @@ function genScopedSlots(
 }
 
 function genScopedSlot(
+=======
+      res += "{name:\"" + (dir.name) + "\",rawName:\"" + (dir.rawName) + "\"" + (dir.value ? (",value:(" + (dir.value) + "),expression:" + (JSON.stringify(dir.value))) : '') + (dir.arg ? (",arg:\"" + (dir.arg) + "\"") : '') + (dir.modifiers ? (",modifiers:" + (JSON.stringify(dir.modifiers))) : '') + "},";
+    }
+  }
+  if (hasRuntime) {
+    return res.slice(0, -1) + ']'
+  }
+}
+
+function genInlineTemplate (el, state) {
+  var ast = el.children[0];
+  if ("development" !== 'production' && (
+    el.children.length !== 1 || ast.type !== 1
+  )) {
+    state.warn('Inline-template components must have exactly one child element.');
+  }
+  if (ast.type === 1) {
+    var inlineRenderFns = generate(ast, state.options);
+    return ("inlineTemplate:{render:function(){" + (inlineRenderFns.render) + "},staticRenderFns:[" + (inlineRenderFns.staticRenderFns.map(function (code) { return ("function(){" + code + "}"); }).join(',')) + "]}")
+  }
+}
+
+function genScopedSlots (
+  slots,
+  state
+) {
+  return ("scopedSlots:_u([" + (Object.keys(slots).map(function (key) {
+      return genScopedSlot(key, slots[key], state)
+    }).join(',')) + "])")
+}
+
+function genScopedSlot (
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   key,
   el,
   state
 ) {
   if (el.for && !el.forProcessed) {
+<<<<<<< HEAD
     return genForScopedSlot(key, el, state);
   }
   var fn =
@@ -10021,6 +10482,36 @@ function genForScopedSlot(key, el, state) {
 }
 
 function genChildren(
+=======
+    return genForScopedSlot(key, el, state)
+  }
+  var fn = "function(" + (String(el.slotScope)) + "){" +
+    "return " + (el.tag === 'template'
+      ? el.if
+        ? ((el.if) + "?" + (genChildren(el, state) || 'undefined') + ":undefined")
+        : genChildren(el, state) || 'undefined'
+      : genElement(el, state)) + "}";
+  return ("{key:" + key + ",fn:" + fn + "}")
+}
+
+function genForScopedSlot (
+  key,
+  el,
+  state
+) {
+  var exp = el.for;
+  var alias = el.alias;
+  var iterator1 = el.iterator1 ? ("," + (el.iterator1)) : '';
+  var iterator2 = el.iterator2 ? ("," + (el.iterator2)) : '';
+  el.forProcessed = true; // avoid recursion
+  return "_l((" + exp + ")," +
+    "function(" + alias + iterator1 + iterator2 + "){" +
+      "return " + (genScopedSlot(key, el, state)) +
+    '})'
+}
+
+function genChildren (
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   el,
   state,
   checkSkip,
@@ -10031,6 +10522,7 @@ function genChildren(
   if (children.length) {
     var el$1 = children[0];
     // optimize single v-for
+<<<<<<< HEAD
     if (
       children.length === 1 &&
       el$1.for &&
@@ -10038,12 +10530,24 @@ function genChildren(
       el$1.tag !== "slot"
     ) {
       return (altGenElement || genElement)(el$1, state);
+=======
+    if (children.length === 1 &&
+      el$1.for &&
+      el$1.tag !== 'template' &&
+      el$1.tag !== 'slot'
+    ) {
+      return (altGenElement || genElement)(el$1, state)
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
     }
     var normalizationType = checkSkip
       ? getNormalizationType(children, state.maybeComponent)
       : 0;
     var gen = altGenNode || genNode;
+<<<<<<< HEAD
     return ("[" + (children.map(function (c) { return gen(c, state); }).join(",")) + "]" + (normalizationType ? ("," + normalizationType) : ""));
+=======
+    return ("[" + (children.map(function (c) { return gen(c, state); }).join(',')) + "]" + (normalizationType ? ("," + normalizationType) : ''))
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   }
 }
 
@@ -10051,7 +10555,11 @@ function genChildren(
 // 0: no normalization needed
 // 1: simple normalization needed (possible 1-level deep nested array)
 // 2: full normalization needed
+<<<<<<< HEAD
 function getNormalizationType(
+=======
+function getNormalizationType (
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   children,
   maybeComponent
 ) {
@@ -10059,6 +10567,7 @@ function getNormalizationType(
   for (var i = 0; i < children.length; i++) {
     var el = children[i];
     if (el.type !== 1) {
+<<<<<<< HEAD
       continue;
     }
     if (
@@ -10112,6 +10621,53 @@ function genSlot(el, state) {
     el.attrs &&
     ("{" + (el.attrs.map(function (a) { return ((camelize(a.name)) + ":" + (a.value)); }).join(",")) + "}");
   var bind$$1 = el.attrsMap["v-bind"];
+=======
+      continue
+    }
+    if (needsNormalization(el) ||
+        (el.ifConditions && el.ifConditions.some(function (c) { return needsNormalization(c.block); }))) {
+      res = 2;
+      break
+    }
+    if (maybeComponent(el) ||
+        (el.ifConditions && el.ifConditions.some(function (c) { return maybeComponent(c.block); }))) {
+      res = 1;
+    }
+  }
+  return res
+}
+
+function needsNormalization (el) {
+  return el.for !== undefined || el.tag === 'template' || el.tag === 'slot'
+}
+
+function genNode (node, state) {
+  if (node.type === 1) {
+    return genElement(node, state)
+  } if (node.type === 3 && node.isComment) {
+    return genComment(node)
+  } else {
+    return genText(node)
+  }
+}
+
+function genText (text) {
+  return ("_v(" + (text.type === 2
+    ? text.expression // no need for () because already wrapped in _s()
+    : transformSpecialNewlines(JSON.stringify(text.text))) + ")")
+}
+
+function genComment (comment) {
+  return ("_e(" + (JSON.stringify(comment.text)) + ")")
+}
+
+function genSlot (el, state) {
+  var slotName = el.slotName || '"default"';
+  var children = genChildren(el, state);
+  var res = "_t(" + slotName + (children ? ("," + children) : '');
+  var attrs = el.attrs && ("{" + (el.attrs.map(function (a) { return ((camelize(a.name)) + ":" + (a.value)); }).join(',')) + "}");
+  var bind$$1 = el.attrsMap['v-bind'];
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   if ((attrs || bind$$1) && !children) {
     res += ",null";
   }
@@ -10119,6 +10675,7 @@ function genSlot(el, state) {
     res += "," + attrs;
   }
   if (bind$$1) {
+<<<<<<< HEAD
     res += (attrs ? "" : ",null") + "," + bind$$1;
   }
   return res + ")";
@@ -10126,26 +10683,54 @@ function genSlot(el, state) {
 
 // componentName is el.component, take it as argument to shun flow's pessimistic refinement
 function genComponent(
+=======
+    res += (attrs ? '' : ',null') + "," + bind$$1;
+  }
+  return res + ')'
+}
+
+// componentName is el.component, take it as argument to shun flow's pessimistic refinement
+function genComponent (
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   componentName,
   el,
   state
 ) {
   var children = el.inlineTemplate ? null : genChildren(el, state, true);
+<<<<<<< HEAD
   return ("_c(" + componentName + "," + (genData$2(el, state)) + (children ? ("," + children) : "") + ")");
 }
 
 function genProps(props) {
   var res = "";
+=======
+  return ("_c(" + componentName + "," + (genData$2(el, state)) + (children ? ("," + children) : '') + ")")
+}
+
+function genProps (props) {
+  var res = '';
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
   for (var i = 0; i < props.length; i++) {
     var prop = props[i];
     res += "\"" + (prop.name) + "\":" + (transformSpecialNewlines(prop.value)) + ",";
   }
+<<<<<<< HEAD
   return res.slice(0, -1);
 }
 
 // #3895, #4268
 function transformSpecialNewlines(text) {
   return text.replace(/\u2028/g, "\\u2028").replace(/\u2029/g, "\\u2029");
+=======
+  return res.slice(0, -1)
+}
+
+// #3895, #4268
+function transformSpecialNewlines (text) {
+  return text
+    .replace(/\u2028/g, '\\u2028')
+    .replace(/\u2029/g, '\\u2029')
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c
 }
 
 /*  */
@@ -10516,4 +11101,11 @@ Vue$3.compile = compileToFunctions;
 return Vue$3;
 
 })));
+<<<<<<< HEAD
 //# sourceMappingURL=vue.js.map
+=======
+<<<<<<< HEAD
+=======
+//# sourceMappingURL=vue.js.map
+>>>>>>> 203668eeef7c19ede2e221aa07043f1b4b46422d
+>>>>>>> 3dcb1163377c580b7b000fbbab4296fef008de8c

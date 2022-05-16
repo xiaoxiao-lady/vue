@@ -17,6 +17,7 @@ const obj = {
 };
 console.log(obj);
 observe(obj);
+obj.a = 10;
 class Vue {
   constructor() {}
 }

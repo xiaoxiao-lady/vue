@@ -1,12 +1,14 @@
+console.log("34343");
+
 import { defineProxy } from "./proxy-demo.js";
-import { defineReactive } from "./defineProperty-demo";
+import { defineReactive } from "./defineProperty-demo.js";
 const data = {
   a: 1,
   b: {
     c: {
-      d:{
-        e:1
-      }
+      d: {
+        e: 1,
+      },
     },
   },
 };
@@ -15,5 +17,5 @@ const proxyData = defineProxy(data); //想要proxy监听到改变，一定要定
 // Object.keys(data).forEach((key) => defineReactive(data, key, data[key]));
 // obj.a = 3; //会触发Object.definePropety
 // proxyData.a = 3; //会触发Object.definePropety和proxy
-console.log(proxyData.b)
+console.log(proxyData.b);
 // proxyData.push(4);

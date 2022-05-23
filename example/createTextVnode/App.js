@@ -3,7 +3,6 @@ import { h, ref, reactive, createTextVNode } from "../../lib/mini-vue.esm.js";
 export default {
   name: "App",
   setup() {},
-
   render() {
     return h("div", {}, [
       h("div", {}, "你好"),

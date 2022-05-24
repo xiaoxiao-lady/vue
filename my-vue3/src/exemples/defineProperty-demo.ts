@@ -1,4 +1,4 @@
-export function defineReactive(target, key, val) {
+export function defineReactive(target:any, key, val) {
   return Object.defineProperty(target, key, {
     get() {
       console.log("object-get", val);

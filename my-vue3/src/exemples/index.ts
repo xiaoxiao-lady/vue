@@ -1,7 +1,7 @@
 console.log("34343");
 
-import { defineProxy } from "./proxy-demo.js";
-import { defineReactive } from "./defineProperty-demo.js";
+import { defineProxy } from "./proxy-demo";
+import { defineReactive } from "./defineProperty-demo";
 const data = {
   a: 1,
   b: {

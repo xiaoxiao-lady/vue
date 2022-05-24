@@ -1,4 +1,4 @@
-export function defineProxy(target) {
+export function defineProxy(target:any) {
   if (typeof target !== "object" || target == null) {
     return target;
   }

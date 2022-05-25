@@ -12,7 +12,8 @@ export function defineProxy(target) {
     set(target, key, val, receiver) {
       console.log("proxy-set", key, val);
       const keys = Reflect.ownKeys(target);
-      if (keys.includes(key)) {  //区别已有的属性还会新增的属性
+      if (keys.includes(key)) {
+        //区别已有的属性还会新增的属性
         console.log("已有的key", key);
       } else {
         console.log("新的key", key);

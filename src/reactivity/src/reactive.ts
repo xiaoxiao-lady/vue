@@ -4,7 +4,7 @@ import {
   shallowReadonlyHandlers,
 } from "./baseHandlers";
 
-export const reactiveMap = new WeakMap();
+export const reactiveMap = new WeakMap(); // WeakMap数据结构(弱引用)，存储经过proxy的数据
 export const readonlyMap = new WeakMap();
 export const shallowReadonlyMap = new WeakMap();
 
@@ -64,7 +64,7 @@ function createReactiveObject(target, proxyMap, baseHandlers) {
   // 核心就是 proxy
   // 目的是可以侦听到用户 get 或者 set 的动作
 
-  // 如果命中的话就直接返回就好了
+  // 如果已经映射过的话就直接返回就好了
   // 使用缓存做的优化点
   const existingProxy = proxyMap.get(target);
   if (existingProxy) {

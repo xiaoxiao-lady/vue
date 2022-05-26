@@ -3,8 +3,8 @@ describe("reactive", () => {
   test("Object", () => {
     const original = { foo: 1 };
     const observed = reactive(original);
-    expect(observed).not.toBe(original);
-    expect(isReactive(observed)).toBe(true);
+    expect(observed).not.toBe(original);  
+    expect(isReactive(observed)).toBe(true); //jest框架单元测试，表示传入isReactive(observed)结果是不是toBe里面的true，不懂的可以看一下jestAPI
     expect(isReactive(original)).toBe(false);
     // get
     expect(observed.foo).toBe(1);

@@ -15,7 +15,7 @@ export function track(target, type, key) {
     depsMap.set(key, (dep = new Set())); //使用set是为了后面收集的effect数组去重
   }
   if (!dep.has(activeEffect)) {
-    // 这两个建立双向的数据存储，在对象的属性中添加effect副作用函数，用于下次的数据变更触发执行
+    // 建立双向的数据存储，在对象的属性中添加effect副作用函数，用于下次的数据变更触发执行
     // 在effect中存储他的dep，供后期取消effect
     dep.add(activeEffect); //收集当前正在执行的effect，
     activeEffect.deps.push(dep);//

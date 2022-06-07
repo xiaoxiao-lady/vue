@@ -5,7 +5,7 @@ let targetMap = new WeakMap(); //临时存储target数据的，便于判断
 
 // 副作用函数，相当于vue2的Watcher,属性更新，页面跟着渲染的核心
 export function effect(fn, options = {}) {
-  debugger;
+  // debugger;
   // 执行副作用钩子的时候，我们需要将当前执行的副作用钩子储存，后期修改值的时候触发，
   // 有的时候我们需要给副作用钩子增加一些属性，所以用高阶函数createReactiveEffect创建effect
   let effect = createReactiveEffect(fn, options);
@@ -66,6 +66,10 @@ export function track(target, type, key) {
   if (!dep) {
     depsMap.set(key, (dep = new Set())); //使用set是为了后面收集的effect数组去重
   }
+  trackEffects(dep);
+}
+// 建立双向数据存储，在后面的计算属性、watch、ref中都会用到
+export function trackEffects(dep) {
   if (!dep.has(activeEffect)) {
     // 建立双向的数据存储，在对象的属性中添加effect副作用函数，用于下次的数据变更触发执行
     // 在effect中存储他的dep，供后期取消effect
@@ -73,7 +77,6 @@ export function track(target, type, key) {
     activeEffect.deps.push(dep); //暂时还没有activeEffect
   }
 }
-
 // 通知更新依赖函数，找到并通知执行这个属性依赖的所有的effect
 export function trigger(target, type, key) {
   const depsMap = targetMap.get(target); //查找target对应的依赖
@@ -88,4 +91,12 @@ export function trigger(target, type, key) {
       effect();
     }
   });
+}
+// 更新依赖，
+export function triggerEffects(dep) {
+  for (const effect of dep) {
+    if (effect != activeEffect) {
+      effect();
+    }
+  }
 }

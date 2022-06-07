@@ -1,7 +1,11 @@
-import { h, ref } from "../../lib/mini-vue.esm.js";
+import { h, ref, computed, reactive } from "../../lib/mini-vue.esm.js";
 
 const count = ref(0);
-
+const data = reactive({ age: 1212 });
+const debounce = computed(() => {
+  return count.value * 2;
+});
+console.log(debounce);
 const HelloWorld = {
   name: "HelloWorld",
   setup() {},
@@ -16,7 +20,7 @@ const HelloWorld = {
     return h(
       "div",
       { tId: "helloWorld" },
-      `hello world: count: ${count.value}`
+      `hello world: count: ${count.value} debounce:${debounce.value}`
     );
   },
 };

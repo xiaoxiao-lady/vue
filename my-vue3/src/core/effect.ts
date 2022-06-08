@@ -95,7 +95,10 @@ export function trigger(target, type, key) {
 // 更新依赖，
 export function triggerEffects(dep) {
   for (const effect of dep) {
-    if (effect != activeEffect) {
+    if (effect == activeEffect) return;
+    if (effect.options.scheduler) {
+      effect.options.scheduler(effect); //依赖更新的时候存在延迟函数延迟执行
+    } else {
       effect();
     }
   }

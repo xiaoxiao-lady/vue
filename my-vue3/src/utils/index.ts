@@ -1,6 +1,9 @@
 export function isObject(obj) {
   return obj !== null && typeof obj === 'object';
 }
+export function isFunction(obj) {
+  return typeof obj === 'function';
+}
 export function def(obj, key, val, enumerable) {
   Object.defineProperty(obj, key, {
     value: val,

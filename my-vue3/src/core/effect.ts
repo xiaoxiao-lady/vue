@@ -43,7 +43,6 @@ export function effect(fn, options = {}) {
   // 如果不是懒函数（computed）用于第一次收集依赖
   effect.run();
   // }
-  return effect;
 }
 
 // 收集依赖函数，收集属性的所有的effect到deps中  结构  {对象:属性：[effect,effect]}

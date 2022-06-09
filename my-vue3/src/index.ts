@@ -27,11 +27,11 @@ const count = ref(1);
 const dounce = computed(() => {
   return count.value * 2;
 });
-effect(() => {
-  app.innerHTML = `今年挣了${dounce.value}`;
-  console.log("vue", count);
-  console.log("vue", dounce);
-}); //effect非常重要，不只是暴露出来的这个函数API,整个响应式的都是通过他，相当于vue2的Watcher
+// effect(() => {
+//   app.innerHTML = `今年挣了${dounce.value}`;
+//   console.log("vue", count);
+//   console.log("vue", dounce);
+// }); //effect非常重要，不只是暴露出来的这个函数API,整个响应式的都是通过他，相当于vue2的Watcher
 
 setTimeout(() => {
   count.value = 25;

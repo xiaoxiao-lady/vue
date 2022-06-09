@@ -1,5 +1,5 @@
 import { isFunction, isObject } from "../utils";
-import { effect, trackEffects, triggerEffects } from "./effect";
+import { effect, trackEffects, triggerEffects, ReactiveEffect } from "./effect";
 
 export class ComputedRefImpl {
   public effect;
@@ -8,7 +8,7 @@ export class ComputedRefImpl {
   private _value;
 
   constructor(getter, public setter) {
-    this.effect = effect(getter, () => {
+    this.effect = new ReactiveEffect(getter, () => {
       if (!this.dirty) {
         this.dirty = true;
         triggerEffects(this.dep); //延迟更新依赖
@@ -16,6 +16,7 @@ export class ComputedRefImpl {
     });
   }
   get value() {
+    debugger;
     trackEffects(this.dep); //收集依赖
     if (this.dirty) {
       //说明只是脏的，需要更新

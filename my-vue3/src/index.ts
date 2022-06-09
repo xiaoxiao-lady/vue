@@ -5,10 +5,13 @@
  * 【源码的core的测试】
  */
 let app = document.getElementById("app");
-import { reactive } from "./core/reactive";
-import { effect } from "./core/effect";
-import { ref } from "./core/ref";
-import { computed } from "./core/computed";
+let my = document.getElementById("my");
+
+import { reactive as myReactive } from "./core/reactive";
+import { effect as myEffect } from "./core/effect";
+import { ref as myRef } from "./core/ref";
+import { computed as myComputed } from "./core/computed";
+import { computed, ref, effect, reactive } from "vue";
 
 // let data = reactive({
 //   name: "王金玉",
@@ -26,10 +29,24 @@ const dounce = computed(() => {
 });
 effect(() => {
   app.innerHTML = `今年挣了${dounce.value}`;
-  console.log(count);
-  console.log(dounce);
+  console.log("vue", count);
+  console.log("vue", dounce);
 }); //effect非常重要，不只是暴露出来的这个函数API,整个响应式的都是通过他，相当于vue2的Watcher
 
 setTimeout(() => {
   count.value = 25;
 }, 1000);
+
+const myCount = myRef(1);
+const myDounce = myComputed(() => {
+  return count.value * 2;
+});
+
+myEffect(() => {
+  my.innerHTML = `今年挣了${myCount.value}`;
+  console.log("my", myCount);
+  console.log("my", myDounce);
+}); //effect非常重要，不只是暴露出来的这个函数API,整个响应式的都是通过他，相当于vue2的Watcher
+setTimeout(() => {
+  myCount.value = 25;
+}, 2000);

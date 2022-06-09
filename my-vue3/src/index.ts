@@ -39,11 +39,11 @@ setTimeout(() => {
 
 const myCount = myRef(1);
 const myDounce = myComputed(() => {
-  return count.value * 2;
+  return myCount.value * 2;
 });
 
 myEffect(() => {
-  my.innerHTML = `今年挣了${myCount.value}`;
+  my.innerHTML = `my今年挣了${myDounce.value}`;
   console.log("my", myCount);
   console.log("my", myDounce);
 }); //effect非常重要，不只是暴露出来的这个函数API,整个响应式的都是通过他，相当于vue2的Watcher

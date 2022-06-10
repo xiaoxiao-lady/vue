@@ -20,6 +20,7 @@ export class ComputedRefImpl {
     trackEffects(this.dep); //收集依赖
     if (this.dirty) {
       //说明只是脏的，需要更新
+      console.log(this.effect.run)
       this._value = this.effect.run();
     }
     return this._value;

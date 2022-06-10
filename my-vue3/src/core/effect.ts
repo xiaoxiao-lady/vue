@@ -23,14 +23,16 @@ export class ReactiveEffect {
       // 如果是非激活的情况，不需要执行依赖收集
       return this.fn();
     }
+    let result;
     try {
       activeEffect = this;
       effectStack.push(activeEffect);
-      this.fn();
+      result = this.fn();
     } finally {
       effectStack.pop();
       activeEffect = effectStack[effectStack.length - 1];
     }
+    return result;
   }
 }
 // 副作用函数，相当于vue2的Watcher,属性更新，页面跟着渲染的核心

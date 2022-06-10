@@ -9,6 +9,7 @@ export class RefImpl {
   public _value;
   public dep = new Set()
   constructor(public rawValue) {
+    debugger
     this._value = convert(rawValue);
   }
   get value() {
@@ -19,6 +20,7 @@ export class RefImpl {
     return this._value;
   }
   set value(newValue) {
+    debugger
     if (this.rawValue != newValue) {
       this._value = newValue; //收集新的值
       this.rawValue = newValue; //更新旧的值

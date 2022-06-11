@@ -17,7 +17,9 @@ let effectStack = [];
 export class ReactiveEffect {
   public active = true; //表示这个effect是否激活
   public deps = [];
-  constructor(public fn, public scheduler) {}
+  constructor(public fn, public scheduler?) {
+    //这里需要第二个参数是可选择的，所以需要加上？
+  }
   run() {
     if (!this.active) {
       // 如果是非激活的情况，不需要执行依赖收集
@@ -40,7 +42,7 @@ export function effect(fn, options = {}) {
   // debugger;
   // 执行副作用钩子的时候，我们需要将当前执行的副作用钩子储存，后期修改值的时候触发，
   // 有的时候我们需要给副作用钩子增加一些属性，所以用高阶函数createReactiveEffect创建effect
-  let effect = new ReactiveEffect(fn, options);
+  let effect = new ReactiveEffect(fn);
   // if (!effect.options.lazy) {
   // 如果不是懒函数（computed）用于第一次收集依赖
   effect.run();

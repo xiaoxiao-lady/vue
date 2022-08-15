@@ -1,4 +1,5 @@
 // 对比react的diff算法的简单版本
+// 参考文章：https://juejin.cn/post/6919376064833667080#heading-2
 const preChildren = ["a", "b", "c", "d"];
 const nextChildren = ["a", "b", "d", "c"];
 function diff(preChildren, nextChildren, parent) {
